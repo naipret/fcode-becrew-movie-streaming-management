@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Controller managing streaming playback sessions, synchronization of cumulative
+ * Controller managing streaming playback sessions, synchronization of
+ * cumulative
  * movie view counts, completion flags, and atomic CSV storage.
  */
 public class StreamingSessionController {
@@ -32,10 +33,11 @@ public class StreamingSessionController {
      *
      * @param csvPath              the filesystem Path to data/sessions.csv
      * @param subscriberController collaborator for validating subscribers
-     * @param movieController      collaborator for validating movies and updating views
+     * @param movieController      collaborator for validating movies and updating
+     *                             views
      */
     public StreamingSessionController(Path csvPath, SubscriberController subscriberController,
-                                      MovieController movieController) {
+            MovieController movieController) {
         if (csvPath == null) {
             throw new IllegalArgumentException("CSV path cannot be null.");
         }
@@ -90,7 +92,7 @@ public class StreamingSessionController {
         rows.add(CSV_HEADER.split(","));
         for (int i = 0; i < this.sessions.size(); i++) {
             StreamingSession s = this.sessions.get(i);
-            rows.add(new String[]{
+            rows.add(new String[] {
                     s.getSessionId(),
                     s.getSubscriberId(),
                     s.getMovieId(),
@@ -103,7 +105,8 @@ public class StreamingSessionController {
     }
 
     /**
-     * Records a new streaming playback session, validates entities, and syncs view count.
+     * Records a new streaming playback session, validates entities, and syncs view
+     * count.
      *
      * @param subscriberId   the subscriber identifier
      * @param movieId        the movie identifier
@@ -113,7 +116,7 @@ public class StreamingSessionController {
      * @throws IllegalArgumentException if subscriber or movie is invalid or missing
      */
     public StreamingSession recordSession(String subscriberId, String movieId,
-                                          int watchedMinutes, LocalDateTime sessionDate) {
+            int watchedMinutes, LocalDateTime sessionDate) {
         Subscriber subscriber = this.subscriberController.findById(subscriberId);
         if (subscriber == null) {
             throw new IllegalArgumentException("Active subscriber not found with ID: " + subscriberId);

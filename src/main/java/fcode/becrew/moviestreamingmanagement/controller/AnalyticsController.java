@@ -34,9 +34,9 @@ public class AnalyticsController {
      * @param subscriberController collaborator for querying subscribers
      */
     public AnalyticsController(StreamingSessionController sessionController,
-                               MovieController movieController,
-                               CategoryController categoryController,
-                               SubscriberController subscriberController) {
+            MovieController movieController,
+            CategoryController categoryController,
+            SubscriberController subscriberController) {
         if (sessionController == null || movieController == null
                 || categoryController == null || subscriberController == null) {
             throw new IllegalArgumentException("Collaborators cannot be null.");
@@ -48,7 +48,8 @@ public class AnalyticsController {
     }
 
     /**
-     * Aggregates global platform statistics across subscribers, content, and sessions.
+     * Aggregates global platform statistics across subscribers, content, and
+     * sessions.
      *
      * @return summary PlatformStatistics snapshot
      */
@@ -84,12 +85,12 @@ public class AnalyticsController {
                 totalSessions,
                 totalHours,
                 completionRate,
-                monthlyRevenue
-        );
+                monthlyRevenue);
     }
 
     /**
-     * Calculates trending categories within a sliding window relative to current time.
+     * Calculates trending categories within a sliding window relative to current
+     * time.
      *
      * @param windowDays the number of days to look back (e.g. 7 or 30)
      * @return sorted list of TrendingCategorySummary records
@@ -179,8 +180,7 @@ public class AnalyticsController {
                     public int compare(MovieRankSummary a, MovieRankSummary b) {
                         return Double.compare(b.getScore(), a.getScore());
                     }
-                }
-        );
+                });
 
         for (int i = 0; i < activeMovies.size(); i++) {
             Movie movie = activeMovies.get(i);
@@ -262,8 +262,7 @@ public class AnalyticsController {
                 monthSessions,
                 monthHours,
                 completionRate,
-                estimatedRevenue
-        );
+                estimatedRevenue);
     }
 
     /**
@@ -289,7 +288,7 @@ public class AnalyticsController {
          * @param projectedRevenue  estimated monthly subscription revenue
          */
         public PlatformStatistics(int activeSubscribers, int activeMovies, int totalSessions,
-                                  double totalHours, double completionRate, double projectedRevenue) {
+                double totalHours, double completionRate, double projectedRevenue) {
             this.activeSubscribers = activeSubscribers;
             this.activeMovies = activeMovies;
             this.totalSessions = totalSessions;
@@ -344,7 +343,7 @@ public class AnalyticsController {
          * @param sessionCount total sessions recorded
          */
         public TrendingCategorySummary(int rank, String categoryId, String categoryName,
-                                       double totalHours, int sessionCount) {
+                double totalHours, int sessionCount) {
             this.rank = rank;
             this.categoryId = categoryId;
             this.categoryName = categoryName;
@@ -396,7 +395,7 @@ public class AnalyticsController {
          * @param score     the weighted normalized score
          */
         public MovieRankSummary(int rank, String movieId, String title,
-                                double rating, int viewCount, double score) {
+                double rating, int viewCount, double score) {
             this.rank = rank;
             this.movieId = movieId;
             this.title = title;
@@ -453,7 +452,7 @@ public class AnalyticsController {
          * @param estimatedRevenue  projected monthly subscription revenue
          */
         public MonthlyPerformanceSummary(YearMonth month, int activeSubscribers, int totalSessions,
-                                         double totalHours, double completionRate, double estimatedRevenue) {
+                double totalHours, double completionRate, double estimatedRevenue) {
             this.month = month;
             this.activeSubscribers = activeSubscribers;
             this.totalSessions = totalSessions;

@@ -12,13 +12,14 @@ import java.util.Locale;
 import java.util.function.Predicate;
 
 /**
- * Controller coordinating movie catalog management, multi-criteria predicate filtering,
- * universal keyword search, category referential integrity, and atomic CSV persistence.
+ * Controller coordinating movie catalog management, multi-criteria predicate
+ * filtering,
+ * universal keyword search, category referential integrity, and atomic CSV
+ * persistence.
  */
 public class MovieController {
 
-    private static final String CSV_HEADER =
-            "id,title,categoryId,director,cast,releaseYear,durationMinutes,rating,viewCount,isDeleted";
+    private static final String CSV_HEADER = "id,title,categoryId,director,cast,releaseYear,durationMinutes,rating,viewCount,isDeleted";
 
     private final Path csvPath;
     private final List<Movie> movies;
@@ -85,7 +86,7 @@ public class MovieController {
         rows.add(CSV_HEADER.split(","));
         for (int i = 0; i < this.movies.size(); i++) {
             Movie movie = this.movies.get(i);
-            rows.add(new String[]{
+            rows.add(new String[] {
                     movie.getId(),
                     movie.getTitle(),
                     movie.getCategoryId(),
@@ -102,7 +103,8 @@ public class MovieController {
     }
 
     /**
-     * Adds a new movie to the catalog after validating metadata and category existence.
+     * Adds a new movie to the catalog after validating metadata and category
+     * existence.
      *
      * @param title           the movie title
      * @param categoryId      the referenced category identifier
@@ -112,10 +114,11 @@ public class MovieController {
      * @param durationMinutes total duration in minutes
      * @param rating          critic rating (0.0 to 10.0)
      * @return the created Movie entity
-     * @throws IllegalArgumentException if title already exists or category is invalid
+     * @throws IllegalArgumentException if title already exists or category is
+     *                                  invalid
      */
     public Movie addMovie(String title, String categoryId, String director,
-                          String cast, int releaseYear, int durationMinutes, double rating) {
+            String cast, int releaseYear, int durationMinutes, double rating) {
         String cleanTitle = InputValidator.normalizeText(title, "Movie title");
         Movie existing = findByTitle(cleanTitle);
         if (existing != null) {
@@ -149,7 +152,7 @@ public class MovieController {
      * @throws IllegalArgumentException if movie not found or title conflicts
      */
     public void updateMovie(String id, String title, String categoryId, String director,
-                            String cast, int releaseYear, int durationMinutes, double rating) {
+            String cast, int releaseYear, int durationMinutes, double rating) {
         Movie movie = findById(id);
         if (movie == null) {
             throw new IllegalArgumentException("Movie not found with ID: " + id);
@@ -275,7 +278,8 @@ public class MovieController {
     }
 
     /**
-     * Searches active movies matching a keyword across title, director, cast, or category name.
+     * Searches active movies matching a keyword across title, director, cast, or
+     * category name.
      *
      * @param keyword the search query keyword
      * @return list of matching active Movie entities
@@ -344,7 +348,8 @@ public class MovieController {
     }
 
     /**
-     * Returns an unmodifiable list of all movie records including soft-deleted ones.
+     * Returns an unmodifiable list of all movie records including soft-deleted
+     * ones.
      *
      * @return unmodifiable list of all Movie entities
      */

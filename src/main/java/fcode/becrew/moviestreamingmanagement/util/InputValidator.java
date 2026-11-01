@@ -47,7 +47,8 @@ public final class InputValidator {
      * @param rawId  the raw identifier input, may be shorthand
      * @param prefix the expected prefix character
      * @return the normalized canonical 6-character identifier
-     * @throws IllegalArgumentException if the raw identifier is invalid or does not match prefix
+     * @throws IllegalArgumentException if the raw identifier is invalid or does not
+     *                                  match prefix
      */
     public static String normalizeId(String rawId, char prefix) {
         if (rawId == null || rawId.trim().isEmpty()) {
@@ -85,7 +86,8 @@ public final class InputValidator {
      * @param rawText   the raw text string
      * @param fieldName the display name of the field for error messages
      * @return the trimmed, sanitized string
-     * @throws IllegalArgumentException if the text is empty or contains non-ASCII characters
+     * @throws IllegalArgumentException if the text is empty or contains non-ASCII
+     *                                  characters
      */
     public static String normalizeText(String rawText, String fieldName) {
         if (rawText == null || rawText.trim().isEmpty()) {
@@ -105,7 +107,8 @@ public final class InputValidator {
      *
      * @param rawName the raw name input
      * @return the title-cased normalized full name
-     * @throws IllegalArgumentException if the name is empty, has non-ASCII characters, or contains digits
+     * @throws IllegalArgumentException if the name is empty, has non-ASCII
+     *                                  characters, or contains digits
      */
     public static String normalizeFullName(String rawName) {
         String clean = normalizeText(rawName, "Full name");
@@ -149,7 +152,8 @@ public final class InputValidator {
         }
         String clean = rawPhone.replaceAll("[^0-9]", "");
         if (!PHONE_REGEX.matcher(clean).matches()) {
-            throw new IllegalArgumentException("Phone number must be a valid 10-digit mobile number (e.g. 0901234567).");
+            throw new IllegalArgumentException(
+                    "Phone number must be a valid 10-digit mobile number (e.g. 0901234567).");
         }
         return clean;
     }
@@ -194,7 +198,8 @@ public final class InputValidator {
     }
 
     /**
-     * Validates that a movie release year is between 1888 and current year plus five.
+     * Validates that a movie release year is between 1888 and current year plus
+     * five.
      *
      * @param year the release year to validate
      * @throws IllegalArgumentException if release year is invalid
@@ -207,11 +212,13 @@ public final class InputValidator {
     }
 
     /**
-     * Validates that watched minutes is positive and does not exceed maximum allowable threshold.
+     * Validates that watched minutes is positive and does not exceed maximum
+     * allowable threshold.
      *
      * @param watchedMinutes the minutes watched in a session
      * @param maxAllowed     the maximum allowed minutes for the session
-     * @throws IllegalArgumentException if watched minutes is non-positive or exceeds maximum allowed
+     * @throws IllegalArgumentException if watched minutes is non-positive or
+     *                                  exceeds maximum allowed
      */
     public static void validateWatchedMinutes(int watchedMinutes, int maxAllowed) {
         if (watchedMinutes <= 0) {
@@ -223,7 +230,8 @@ public final class InputValidator {
     }
 
     /**
-     * Parses a date string in dd/MM/yyyy format, supporting shorthand day or day/month input.
+     * Parses a date string in dd/MM/yyyy format, supporting shorthand day or
+     * day/month input.
      *
      * @param raw the raw input date string
      * @return the parsed LocalDate object

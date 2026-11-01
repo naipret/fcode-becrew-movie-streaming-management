@@ -16,7 +16,8 @@ import java.util.Locale;
 
 /**
  * Interactive 80-column console menu for managing streaming playback sessions:
- * recording watch logs, viewing session history with filtering, and cancelling sessions.
+ * recording watch logs, viewing session history with filtering, and cancelling
+ * sessions.
  */
 public class StreamingSessionMenu extends Menu {
 
@@ -26,10 +27,8 @@ public class StreamingSessionMenu extends Menu {
             "Cancel Streaming Session"
     };
 
-    private static final String TABLE_BORDER =
-            "+--------+--------+--------+------------------+----------+----------+----------+";
-    private static final String TABLE_HEADER =
-            "| SessID | SubID  | MovID  | Session Date     | Watched  | Duration | Status   |";
+    private static final String TABLE_BORDER = "+--------+--------+--------+------------------+----------+----------+----------+";
+    private static final String TABLE_HEADER = "| SessID | SubID  | MovID  | Session Date     | Watched  | Duration | Status   |";
 
     private final StreamingSessionController sessionController;
     private final SubscriberController subscriberController;
@@ -43,8 +42,8 @@ public class StreamingSessionMenu extends Menu {
      * @param movieController      collaborator for movie verification
      */
     public StreamingSessionMenu(StreamingSessionController sessionController,
-                                SubscriberController subscriberController,
-                                MovieController movieController) {
+            SubscriberController subscriberController,
+            MovieController movieController) {
         super("MOVIE STREAMING MANAGEMENT SYSTEM > [4] SESSIONS", MENU_OPTIONS);
         if (sessionController == null || subscriberController == null || movieController == null) {
             throw new IllegalArgumentException("Controllers cannot be null.");
@@ -214,7 +213,8 @@ public class StreamingSessionMenu extends Menu {
             System.out.println();
             renderSingleSessionTable(session);
 
-            if (!ConsoleUtil.confirm("Confirm cancelling session " + session.getSessionId() + " (will revert view count)?")) {
+            if (!ConsoleUtil
+                    .confirm("Confirm cancelling session " + session.getSessionId() + " (will revert view count)?")) {
                 System.out.println("[INFO] Operation cancelled.");
                 printDivider();
                 continue;
@@ -236,7 +236,8 @@ public class StreamingSessionMenu extends Menu {
         System.out.println(TABLE_HEADER);
         System.out.println(TABLE_BORDER);
         if (sessionList.isEmpty()) {
-            System.out.println("|" + TableFormatter.center("No streaming sessions logged.", TableFormatter.SCREEN_WIDTH - 2) + "|");
+            System.out.println("|"
+                    + TableFormatter.center("No streaming sessions logged.", TableFormatter.SCREEN_WIDTH - 2) + "|");
         } else {
             for (int i = 0; i < sessionList.size(); i++) {
                 StreamingSession s = sessionList.get(i);
@@ -261,7 +262,7 @@ public class StreamingSessionMenu extends Menu {
     }
 
     private void printSessionRow(String sessId, String subId, String movId,
-                                 LocalDateTime date, int watched, int duration, boolean complete) {
+            LocalDateTime date, int watched, int duration, boolean complete) {
         System.out.printf("| %-6s | %-6s | %-6s | %-16s | %4d min | %4d min | %-8s |%n",
                 TableFormatter.fit(sessId, 6),
                 TableFormatter.fit(subId, 6),

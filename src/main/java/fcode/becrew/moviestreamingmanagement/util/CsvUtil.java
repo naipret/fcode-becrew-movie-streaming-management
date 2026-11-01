@@ -62,7 +62,8 @@ public final class CsvUtil {
     }
 
     /**
-     * Atomically writes CSV rows to the specified destination Path via a temporary file.
+     * Atomically writes CSV rows to the specified destination Path via a temporary
+     * file.
      *
      * @param targetPath the target file Path
      * @param rows       the list of string arrays representing CSV rows

@@ -8,7 +8,6 @@ if (-not (Test-Path $dataDir)) {
 $today = Get-Date
 $fmt = "yyyy-MM-ddTHH:mm:ss"
 
-# Dynamic date offsets for streaming sessions
 $dNow = $today.ToString($fmt)
 $dTodayMorn = $today.Date.AddHours(9).ToString($fmt)
 $dYesterdayEve = $today.AddDays(-1).Date.AddHours(20).ToString($fmt)

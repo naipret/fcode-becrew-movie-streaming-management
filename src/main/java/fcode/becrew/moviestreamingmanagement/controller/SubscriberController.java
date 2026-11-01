@@ -71,7 +71,7 @@ public class SubscriberController {
         rows.add(CSV_HEADER.split(","));
         for (int i = 0; i < this.subscribers.size(); i++) {
             Subscriber sub = this.subscribers.get(i);
-            rows.add(new String[]{
+            rows.add(new String[] {
                     sub.getId(),
                     sub.getFullName(),
                     sub.getPhone(),
@@ -91,7 +91,8 @@ public class SubscriberController {
      * @param email    the subscriber email address
      * @param tier     the subscription tier ("Standard" or "Premium")
      * @return the created Subscriber entity
-     * @throws IllegalArgumentException if phone already exists or inputs are invalid
+     * @throws IllegalArgumentException if phone already exists or inputs are
+     *                                  invalid
      */
     public Subscriber registerSubscriber(String fullName, String phone, String email, String tier) {
         String cleanPhone = InputValidator.normalizePhone(phone);
@@ -131,7 +132,8 @@ public class SubscriberController {
             }
         }
 
-        Subscriber updated = Subscriber.create(tier, existing.getId(), fullName, cleanPhone, email, existing.isDeleted());
+        Subscriber updated = Subscriber.create(tier, existing.getId(), fullName, cleanPhone, email,
+                existing.isDeleted());
         for (int i = 0; i < this.subscribers.size(); i++) {
             if (this.subscribers.get(i).getId().equals(existing.getId())) {
                 this.subscribers.set(i, updated);
@@ -268,7 +270,8 @@ public class SubscriberController {
     }
 
     /**
-     * Returns an unmodifiable list of all subscriber records including soft-deleted ones.
+     * Returns an unmodifiable list of all subscriber records including soft-deleted
+     * ones.
      *
      * @return unmodifiable list of all Subscriber records
      */

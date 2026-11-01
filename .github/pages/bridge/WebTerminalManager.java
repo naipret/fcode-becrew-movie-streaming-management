@@ -1,7 +1,8 @@
 package web;
 
 /**
- * Native bridge interface between the CheerpJ WebAssembly runtime and the browser
+ * Native bridge interface between the CheerpJ WebAssembly runtime and the
+ * browser
  * xterm.js terminal emulator.
  *
  * Method implementations are supplied in JavaScript via the CheerpJ natives

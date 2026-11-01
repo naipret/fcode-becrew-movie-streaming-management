@@ -14,7 +14,8 @@ import java.util.Locale;
 
 /**
  * Interactive 80-column console menu for viewing analytical platform reports:
- * platform viewing statistics, sliding window trending categories, Max-Heap Top-K
+ * platform viewing statistics, sliding window trending categories, Max-Heap
+ * Top-K
  * movie rankings, and monthly performance reports.
  */
 public class AnalyticsMenu extends Menu {
@@ -70,14 +71,28 @@ public class AnalyticsMenu extends Menu {
 
         System.out.println();
         System.out.println(border);
-        System.out.println("| " + TableFormatter.center("PLATFORM VIEWING STATISTICS OVERVIEW", TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println(
+                "| " + TableFormatter.center("PLATFORM VIEWING STATISTICS OVERVIEW", TableFormatter.SCREEN_WIDTH - 4)
+                        + " |");
         System.out.println(border);
-        System.out.println("| " + TableFormatter.fit("Active Subscribers        : " + stats.getActiveSubscribers() + " accounts", TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Active Movies in Catalog  : " + stats.getActiveMovies() + " movies", TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Total Sessions Logged     : " + stats.getTotalSessions() + " sessions", TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Total Streaming Time      : " + String.format(Locale.US, "%.1f hours", stats.getTotalHours()), TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Overall Completion Rate   : " + String.format(Locale.US, "%.1f %%", stats.getCompletionRate()), TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Projected Monthly Revenue : " + String.format(Locale.US, "$ %,.2f", stats.getProjectedRevenue()), TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println(
+                "| " + TableFormatter.fit("Active Subscribers        : " + stats.getActiveSubscribers() + " accounts",
+                        TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out
+                .println("| " + TableFormatter.fit("Active Movies in Catalog  : " + stats.getActiveMovies() + " movies",
+                        TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println(
+                "| " + TableFormatter.fit("Total Sessions Logged     : " + stats.getTotalSessions() + " sessions",
+                        TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| " + TableFormatter.fit(
+                "Total Streaming Time      : " + String.format(Locale.US, "%.1f hours", stats.getTotalHours()),
+                TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| " + TableFormatter.fit(
+                "Overall Completion Rate   : " + String.format(Locale.US, "%.1f %%", stats.getCompletionRate()),
+                TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| " + TableFormatter.fit(
+                "Projected Monthly Revenue : " + String.format(Locale.US, "$ %,.2f", stats.getProjectedRevenue()),
+                TableFormatter.SCREEN_WIDTH - 4) + " |");
         System.out.println(border);
 
         ConsoleUtil.readOptionalString("Press [Enter] to return to Reports Menu: ");
@@ -104,7 +119,8 @@ public class AnalyticsMenu extends Menu {
             System.out.println(border);
 
             if (summaries.isEmpty()) {
-                System.out.println("|" + TableFormatter.center("No streaming sessions logged within this time window.", TableFormatter.SCREEN_WIDTH - 2) + "|");
+                System.out.println("|" + TableFormatter.center("No streaming sessions logged within this time window.",
+                        TableFormatter.SCREEN_WIDTH - 2) + "|");
             } else {
                 for (int i = 0; i < summaries.size(); i++) {
                     TrendingCategorySummary item = summaries.get(i);
@@ -142,7 +158,8 @@ public class AnalyticsMenu extends Menu {
             System.out.println(border);
 
             if (ranked.isEmpty()) {
-                System.out.println("|" + TableFormatter.center("No active movies available for ranking.", TableFormatter.SCREEN_WIDTH - 2) + "|");
+                System.out.println("|" + TableFormatter.center("No active movies available for ranking.",
+                        TableFormatter.SCREEN_WIDTH - 2) + "|");
             } else {
                 for (int i = 0; i < ranked.size(); i++) {
                     MovieRankSummary item = ranked.get(i);
@@ -170,19 +187,35 @@ public class AnalyticsMenu extends Menu {
             }
 
             MonthlyPerformanceSummary report = this.analyticsController.getMonthlyPerformanceReport(targetMonth);
-            String title = "MONTHLY PERFORMANCE REPORT - " + targetMonth.format(MONTH_HEADER_FORMAT).toUpperCase(Locale.US);
+            String title = "MONTHLY PERFORMANCE REPORT - "
+                    + targetMonth.format(MONTH_HEADER_FORMAT).toUpperCase(Locale.US);
             String border = "+" + TableFormatter.repeat('-', TableFormatter.SCREEN_WIDTH - 2) + "+";
 
             System.out.println();
             System.out.println(border);
             System.out.println("| " + TableFormatter.center(title, TableFormatter.SCREEN_WIDTH - 4) + " |");
             System.out.println(border);
-            System.out.println("| " + TableFormatter.fit("Target Billing Month             : " + targetMonth.format(MONTH_HEADER_FORMAT), TableFormatter.SCREEN_WIDTH - 4) + " |");
-            System.out.println("| " + TableFormatter.fit("Total Active Subscribers         : " + report.getActiveSubscribers() + " subscribers", TableFormatter.SCREEN_WIDTH - 4) + " |");
-            System.out.println("| " + TableFormatter.fit("Total Sessions Recorded in Month : " + report.getTotalSessions() + " sessions", TableFormatter.SCREEN_WIDTH - 4) + " |");
-            System.out.println("| " + TableFormatter.fit("Total Monthly Streaming Time     : " + String.format(Locale.US, "%.1f hours", report.getTotalHours()), TableFormatter.SCREEN_WIDTH - 4) + " |");
-            System.out.println("| " + TableFormatter.fit("Monthly Completion Rate          : " + String.format(Locale.US, "%.1f %%", report.getCompletionRate()), TableFormatter.SCREEN_WIDTH - 4) + " |");
-            System.out.println("| " + TableFormatter.fit("Estimated Monthly Subscription Rev: " + String.format(Locale.US, "$ %,.2f", report.getEstimatedRevenue()), TableFormatter.SCREEN_WIDTH - 4) + " |");
+            System.out.println("| " + TableFormatter.fit(
+                    "Target Billing Month             : " + targetMonth.format(MONTH_HEADER_FORMAT),
+                    TableFormatter.SCREEN_WIDTH - 4) + " |");
+            System.out.println("| " + TableFormatter.fit(
+                    "Total Active Subscribers         : " + report.getActiveSubscribers() + " subscribers",
+                    TableFormatter.SCREEN_WIDTH - 4) + " |");
+            System.out.println("| " + TableFormatter.fit(
+                    "Total Sessions Recorded in Month : " + report.getTotalSessions() + " sessions",
+                    TableFormatter.SCREEN_WIDTH - 4) + " |");
+            System.out.println("| " + TableFormatter.fit(
+                    "Total Monthly Streaming Time     : "
+                            + String.format(Locale.US, "%.1f hours", report.getTotalHours()),
+                    TableFormatter.SCREEN_WIDTH - 4) + " |");
+            System.out.println("| " + TableFormatter.fit(
+                    "Monthly Completion Rate          : "
+                            + String.format(Locale.US, "%.1f %%", report.getCompletionRate()),
+                    TableFormatter.SCREEN_WIDTH - 4) + " |");
+            System.out.println("| " + TableFormatter.fit(
+                    "Estimated Monthly Subscription Rev: "
+                            + String.format(Locale.US, "$ %,.2f", report.getEstimatedRevenue()),
+                    TableFormatter.SCREEN_WIDTH - 4) + " |");
             System.out.println(border);
 
             printDivider();

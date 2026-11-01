@@ -3,8 +3,10 @@ package fcode.becrew.moviestreamingmanagement.model;
 import fcode.becrew.moviestreamingmanagement.util.InputValidator;
 
 /**
- * Abstract base class representing a registered subscriber on the streaming platform.
- * Encapsulates common profile attributes and defines polymorphic strategy contracts
+ * Abstract base class representing a registered subscriber on the streaming
+ * platform.
+ * Encapsulates common profile attributes and defines polymorphic strategy
+ * contracts
  * for monthly billing calculations and concurrent stream capacity.
  */
 public abstract class Subscriber {
@@ -33,7 +35,8 @@ public abstract class Subscriber {
     }
 
     /**
-     * Static Factory Method instantiating the appropriate concrete Subscriber subclass
+     * Static Factory Method instantiating the appropriate concrete Subscriber
+     * subclass
      * based on the subscription tier discriminator.
      *
      * @param tier      the subscription tier string ("Standard" or "Premium")
@@ -46,7 +49,7 @@ public abstract class Subscriber {
      * @throws IllegalArgumentException if the tier is unknown or invalid
      */
     public static Subscriber create(String tier, String id, String fullName,
-                                    String phone, String email, boolean isDeleted) {
+            String phone, String email, boolean isDeleted) {
         if (tier == null || tier.trim().isEmpty()) {
             throw new IllegalArgumentException("Subscriber tier cannot be empty.");
         }

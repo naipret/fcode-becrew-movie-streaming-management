@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Controller managing category registry state, case-insensitive uniqueness invariants,
+ * Controller managing category registry state, case-insensitive uniqueness
+ * invariants,
  * foreign key deletion constraints, and atomic CSV persistence.
  */
 public class CategoryController {
@@ -21,7 +22,8 @@ public class CategoryController {
     private final List<Category> categories;
 
     /**
-     * Constructs a CategoryController and loads persistent categories from the given CSV path.
+     * Constructs a CategoryController and loads persistent categories from the
+     * given CSV path.
      *
      * @param csvPath the filesystem Path to data/categories.csv
      */
@@ -68,7 +70,7 @@ public class CategoryController {
         rows.add(CSV_HEADER.split(","));
         for (int i = 0; i < this.categories.size(); i++) {
             Category cat = this.categories.get(i);
-            rows.add(new String[]{
+            rows.add(new String[] {
                     cat.getId(),
                     cat.getName(),
                     cat.getDescription(),
@@ -106,7 +108,8 @@ public class CategoryController {
      * @param id          the category identifier
      * @param name        the updated category name
      * @param description the updated description
-     * @throws IllegalArgumentException if category does not exist or new name conflicts
+     * @throws IllegalArgumentException if category does not exist or new name
+     *                                  conflicts
      */
     public void updateCategory(String id, String name, String description) {
         Category category = findById(id);
@@ -130,7 +133,8 @@ public class CategoryController {
      *
      * @param id              the category identifier to delete
      * @param hasActiveMovies true if active movies still reference this category
-     * @throws IllegalArgumentException if category does not exist or has referencing movies
+     * @throws IllegalArgumentException if category does not exist or has
+     *                                  referencing movies
      */
     public void deleteCategory(String id, boolean hasActiveMovies) {
         Category category = findById(id);

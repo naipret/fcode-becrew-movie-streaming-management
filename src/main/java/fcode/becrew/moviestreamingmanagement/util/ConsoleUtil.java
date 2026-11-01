@@ -96,7 +96,8 @@ public final class ConsoleUtil {
     }
 
     /**
-     * Reads an integer with an optional default value on pressing Enter, or null on 0.
+     * Reads an integer with an optional default value on pressing Enter, or null on
+     * 0.
      *
      * @param prompt       the prompt message
      * @param min          minimum allowable value
