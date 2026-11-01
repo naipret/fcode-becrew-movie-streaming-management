@@ -41,7 +41,7 @@ fcode-becrew-movie-streaming-management/
 │   ├── NAMING_CONVENTIONS.md
 │   ├── CLEAN_CODE.md
 │   └── WRITING_STYLE.md
-└── src/fcode/becrew/moviestreamingmanagement/
+└── src/main/java/fcode/becrew/moviestreamingmanagement/
     ├── Main.java
     ├── model/
     ├── controller/
