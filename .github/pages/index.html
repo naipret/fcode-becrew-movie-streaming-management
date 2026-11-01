@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie Streaming Management System</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>" />
+
+    <!-- Google Fonts: JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- xterm.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.css" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            background-color: #121212;
+            font-family:
+                -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                Helvetica, Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #app-wrapper {
+            width: 96vw;
+            max-width: 1100px;
+            height: 94vh;
+            max-height: 850px;
+            background: #1e1e1e;
+            border: 1px solid #383838;
+            border-radius: 12px;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* GNOME Headerbar */
+        #gnome-headerbar {
+            height: 44px;
+            background: #2e2e2e;
+            border-bottom: 1px solid #3c3c3c;
+            padding: 0 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 140px;
+        }
+
+        .terminal-icon {
+            width: 18px;
+            height: 18px;
+            fill: #9a9a9a;
+        }
+
+        .header-title {
+            font-size: 13.5px;
+            font-weight: 500;
+            color: #f0f0f0;
+            letter-spacing: 0.2px;
+            text-align: center;
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 140px;
+            justify-content: flex-end;
+        }
+
+        .btn-reset {
+            background: #383838;
+            color: #deddda;
+            border: 1px solid #4a4a4a;
+            border-radius: 6px;
+            padding: 5px 11px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-reset:hover {
+            background: #484848;
+            color: #ffffff;
+            border-color: #5a5a5a;
+        }
+
+        .btn-reset:active {
+            background: #2b2b2b;
+            transform: scale(0.97);
+        }
+
+        .btn-close {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #383838;
+            color: #9a9a9a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition:
+                background 0.15s ease,
+                color 0.15s ease;
+        }
+
+        .btn-close:hover {
+            background: #c01c28;
+            color: #ffffff;
+        }
+
+        /* Terminal screen container: completely hide scrollbars */
+        #terminal-container {
+            flex: 1;
+            background-color: #1e1e1e;
+            padding: 12px 16px;
+            overflow: auto;
+            position: relative;
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+        }
+
+        #terminal-container::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        .xterm {
+            height: 100%;
+        }
+
+        /* Completely hide xterm internal scrollbar */
+        .xterm .xterm-viewport {
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+        }
+
+        .xterm .xterm-viewport::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        /* Minimal empty footer */
+        #gnome-footer {
+            height: 8px;
+            background: #242424;
+            border-top: 1px solid #343434;
+        }
+
+        /* Splash loading overlay */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            background: #121212;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            color: #c9d1d9;
+            transition:
+                opacity 0.4s ease,
+                visibility 0.4s ease;
+        }
+
+        #splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(98, 160, 234, 0.2);
+            border-top-color: #62a0ea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .splash-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #deddda;
+        }
+
+        .splash-desc {
+            font-size: 13px;
+            color: #8b949e;
+        }
+    </style>
+
+    <!-- xterm.js & addons -->
+    <script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/lib/xterm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@xterm/addon-fit@0.10.0/lib/addon-fit.js"></script>
+
+    <!-- CheerpJ 3.0 WebAssembly Loader -->
+    <script src="https://cjrtnc.leaningtech.com/3.0/cj3loader.js"></script>
+</head>
+
+<body>
+    <!-- Splash Loading Overlay -->
+    <div id="splash-screen">
+        <div class="spinner"></div>
+        <div class="splash-title">Movie Streaming Management System</div>
+        <div class="splash-desc" id="splash-status">
+            Initializing WebAssembly Runtime...
+        </div>
+    </div>
+
+    <!-- GNOME Terminal Window -->
+    <div id="app-wrapper">
+        <!-- Headerbar -->
+        <div id="gnome-headerbar">
+            <div class="header-left">
+                <svg class="terminal-icon" viewBox="0 0 24 24">
+                    <path
+                        d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zm-12-3l3-3-3-3 1.4-1.4 4.4 4.4-4.4 4.4L8 15zm5 0h6v2h-6v-2z" />
+                </svg>
+            </div>
+            <div class="header-title">Movie Streaming Management System</div>
+            <div class="header-right">
+                <button class="btn-reset" id="btn-reset-data"
+                    title="Generate fresh sample data based on current date and restart">
+                    <svg width="13" height="13" fill="none" stroke="#ffb86c" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                        </path>
+                    </svg>
+                    <span>Reset Data</span>
+                </button>
+                <div class="btn-close" id="btn-close-app" title="Exit">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Terminal Output -->
+        <div id="terminal-container"></div>
+
+        <!-- Minimal Footer -->
+        <div id="gnome-footer"></div>
+    </div>
+
+    <script>
+        // Client-Side Dynamic Seed Data Generator
+        function generateDynamicSeedData() {
+            const now = new Date();
+
+            function calcDate(days) {
+                const d = new Date(now.getTime() + days * 86400000);
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, "0");
+                const day = String(d.getDate()).padStart(2, "0");
+                return `${year}-${month}-${day}`;
+            }
+
+            function calcDateTime(days, timeStr) {
+                return `${calcDate(days)}T${timeStr}`;
+            }
+
+            const dTodayMorn = calcDateTime(0, "09:00:00");
+            const dYesterdayEve = calcDateTime(-1, "20:00:00");
+            const dPast2Days = calcDateTime(-2, "21:00:00");
+            const dPast3Days = calcDateTime(-3, "19:00:00");
+            const dPast4Days = calcDateTime(-4, "22:00:00");
+            const dPast5Days = calcDateTime(-5, "15:00:00");
+            const dPast6Days = calcDateTime(-6, "20:00:00");
+            const dPast8Days = calcDateTime(-8, "18:00:00");
+            const dPast10Days = calcDateTime(-10, "21:00:00");
+            const dPast12Days = calcDateTime(-12, "14:00:00");
+            const dPast15Days = calcDateTime(-15, "20:00:00");
+            const dPast18Days = calcDateTime(-18, "19:00:00");
+            const dPast20Days = calcDateTime(-20, "22:00:00");
+            const dPast25Days = calcDateTime(-25, "16:00:00");
+            const dPast28Days = calcDateTime(-28, "20:00:00");
+            const dPast35Days = calcDateTime(-35, "19:00:00");
+            const dPast45Days = calcDateTime(-45, "21:00:00");
+            const dPast60Days = calcDateTime(-60, "20:00:00");
+
+            const categoriesCsv = [
+                "id,name,description,isDeleted",
+                "G00001,Sci-Fi,Science fiction and futuristic technology,false",
+                "G00002,Action,High energy stunts combat and chases,false",
+                "G00003,Drama,Character driven realistic emotional narratives,false",
+                "G00004,Comedy,Humorous lighthearted and entertaining stories,false",
+                "G00005,Horror,Supernatural thrillers suspense and fear,false",
+                "G00006,Animation,Hand-drawn CGI and artistic animated features,false",
+                "G00007,Thriller,Psychological mysteries suspense and twists,false",
+                "G00008,Romance,Romantic relationships drama and intimacy,false",
+                "",
+            ].join("\n");
+
+            const moviesCsv = [
+                "id,title,categoryId,director,cast,releaseYear,durationMinutes,rating,viewCount,isDeleted",
+                'M00001,Inception,G00001,Christopher Nolan,"Leonardo DiCaprio, Joseph Gordon-Levitt, Elliot Page",2010,148,8.8,52000,false',
+                'M00002,Interstellar,G00001,Christopher Nolan,"Matthew McConaughey, Anne Hathaway, Jessica Chastain",2014,169,8.7,48000,false',
+                'M00003,The Matrix,G00001,Lana Wachowski,"Keanu Reeves, Laurence Fishburne, Carrie-Anne Moss",1999,136,8.7,45000,false',
+                'M00004,Blade Runner 2049,G00001,Denis Villeneuve,"Ryan Gosling, Harrison Ford, Ana de Armas",2017,164,8.0,31000,false',
+                'M00005,The Dark Knight,G00002,Christopher Nolan,"Christian Bale, Heath Ledger, Aaron Eckhart",2008,152,9.0,68000,false',
+                'M00006,Mad Max Fury Road,G00002,George Miller,"Tom Hardy, Charlize Theron, Nicholas Hoult",2015,120,8.1,38000,false',
+                'M00007,John Wick,G00002,Chad Stahelski,"Keanu Reeves, Michael Nyqvist, Alfie Allen",2014,101,7.4,34000,false',
+                'M00008,Gladiator,G00002,Ridley Scott,"Russell Crowe, Joaquin Phoenix, Connie Nielsen",2000,155,8.5,41000,false',
+                'M00009,The Shawshank Redemption,G00003,Frank Darabont,"Tim Robbins, Morgan Freeman, Bob Gunton",1994,142,9.3,72000,false',
+                'M00010,The Godfather,G00003,Francis Ford Coppola,"Marlon Brando, Al Pacino, James Caan",1972,175,9.2,59000,false',
+                'M00011,Parasite,G00003,Bong Joon-ho,"Song Kang-ho, Lee Sun-kyun, Cho Yeo-jeong",2019,132,8.5,36000,false',
+                'M00012,The Grand Budapest Hotel,G00004,Wes Anderson,"Ralph Fiennes, F. Murray Abraham, Mathieu Amalric",2014,99,8.1,28000,false',
+                'M00013,Superbad,G00004,Greg Mottola,"Jonah Hill, Michael Cera, Christopher Mintz-Plasse",2007,113,7.6,25000,false',
+                'M00014,A Quiet Place,G00005,John Krasinski,"Emily Blunt, John Krasinski, Millicent Simmonds",2018,90,7.5,29000,false',
+                'M00015,Get Out,G00005,Jordan Peele,"Daniel Kaluuya, Allison Williams, Bradley Whitford",2017,104,7.8,33000,false',
+                'M00016,Spirited Away,G00006,Hayao Miyazaki,"Rumi Hiiragi, Miyu Irino, Mari Natsuki",2001,125,8.6,42000,false',
+                'M00017,Spider-Man Into the Spider-Verse,G00006,Bob Persichetti,"Shameik Moore, Jake Johnson, Hailee Steinfeld",2018,117,8.4,46000,false',
+                'M00018,Se7en,G00007,David Fincher,"Brad Pitt, Morgan Freeman, Gwyneth Paltrow",1995,127,8.6,47000,false',
+                'M00019,Shutter Island,G00007,Martin Scorsese,"Leonardo DiCaprio, Mark Ruffalo, Ben Kingsley",2010,138,8.2,39000,false',
+                'M00020,La La Land,G00008,Damien Chazelle,"Ryan Gosling, Emma Stone, John Legend",2016,128,8.0,35000,false',
+                "",
+            ].join("\n");
+
+            const subscribersCsv = [
+                "id,fullName,phone,email,tier,isDeleted",
+                "U00001,Nguyen Van An,0901234567,an.nguyen@domain.com,Premium,false",
+                "U00002,Tran Thi Binh,0912345678,binh.tran@domain.com,Standard,false",
+                "U00003,Le Hoang Cuong,0923456789,cuong.le@domain.com,Premium,false",
+                "U00004,Pham Minh Duc,0934567890,duc.pham@domain.com,Standard,false",
+                "U00005,Hoang Thuy Linh,0945678901,linh.hoang@domain.com,Premium,false",
+                "U00006,Vu Tuan Kiet,0967890123,kiet.vu@domain.com,Standard,false",
+                "U00007,Doan Bao Ngoc,0978901234,ngoc.doan@domain.com,Premium,false",
+                "U00008,Bui Quoc Huy,0989012345,huy.bui@domain.com,Standard,false",
+                "U00009,Dang My Hanh,0909876543,hanh.dang@domain.com,Premium,false",
+                "U00010,Ngo Thanh Tung,0918765432,tung.ngo@domain.com,Standard,false",
+                "U00011,Dinh Gia Phuc,0927654321,phuc.dinh@domain.com,Premium,false",
+                "U00012,Cao Phuong Thao,0936543210,thao.cao@domain.com,Standard,false",
+                "U00013,Phan Huu Thinh,0945432109,thinh.phan@domain.com,Premium,false",
+                "U00014,Luong Kim Oanh,0964321098,oanh.luong@domain.com,Standard,false",
+                "U00015,Trinh Duc Manh,0973210987,manh.trinh@domain.com,Premium,false",
+                "",
+            ].join("\n");
+
+            const sessionsCsv = [
+                "sessionId,subscriberId,movieId,sessionDate,watchedMinutes,isCompleted",
+                `S00001,U00001,M00001,${dTodayMorn},148,true`,
+                `S00002,U00002,M00005,${dYesterdayEve},152,true`,
+                `S00003,U00003,M00002,${dYesterdayEve},80,false`,
+                `S00004,U00004,M00009,${dPast2Days},142,true`,
+                `S00005,U00005,M00001,${dPast2Days},148,true`,
+                `S00006,U00006,M00006,${dPast3Days},120,true`,
+                `S00007,U00007,M00016,${dPast3Days},125,true`,
+                `S00008,U00008,M00017,${dPast4Days},60,false`,
+                `S00009,U00009,M00005,${dPast4Days},152,true`,
+                `S00010,U00010,M00018,${dPast5Days},127,true`,
+                `S00011,U00011,M00003,${dPast5Days},136,true`,
+                `S00012,U00012,M00012,${dPast6Days},99,true`,
+                `S00013,U00013,M00014,${dPast6Days},90,true`,
+                `S00014,U00014,M00020,${dPast6Days},128,true`,
+                `S00015,U00015,M00001,${dPast8Days},148,true`,
+                `S00016,U00001,M00005,${dPast8Days},152,true`,
+                `S00017,U00002,M00002,${dPast10Days},169,true`,
+                `S00018,U00003,M00010,${dPast10Days},90,false`,
+                `S00019,U00004,M00007,${dPast12Days},101,true`,
+                `S00020,U00005,M00004,${dPast12Days},164,true`,
+                `S00021,U00006,M00011,${dPast15Days},132,true`,
+                `S00022,U00007,M00015,${dPast15Days},104,true`,
+                `S00023,U00008,M00019,${dPast18Days},70,false`,
+                `S00024,U00009,M00008,${dPast18Days},155,true`,
+                `S00025,U00010,M00013,${dPast20Days},113,true`,
+                `S00026,U00011,M00016,${dPast20Days},125,true`,
+                `S00027,U00012,M00003,${dPast25Days},136,true`,
+                `S00028,U00013,M00009,${dPast25Days},142,true`,
+                `S00029,U00014,M00005,${dPast28Days},152,true`,
+                `S00030,U00015,M00001,${dPast28Days},148,true`,
+                `S00031,U00001,M00002,${dPast35Days},169,true`,
+                `S00032,U00002,M00006,${dPast35Days},120,true`,
+                `S00033,U00003,M00018,${dPast45Days},127,true`,
+                `S00034,U00004,M00010,${dPast45Days},175,true`,
+                `S00035,U00005,M00007,${dPast60Days},101,true`,
+                `S00036,U00006,M00017,${dPast60Days},117,true`,
+                `S00037,U00007,M00008,${dPast60Days},155,true`,
+                `S00038,U00008,M00004,${dPast60Days},164,true`,
+                `S00039,U00009,M00011,${dPast60Days},132,true`,
+                `S00040,U00010,M00020,${dPast60Days},128,true`,
+                "",
+            ].join("\n");
+
+            return {
+                "categories.csv": categoriesCsv,
+                "movies.csv": moviesCsv,
+                "subscribers.csv": subscribersCsv,
+                "sessions.csv": sessionsCsv,
+            };
+        }
+
+        const dynamicSeedCache = generateDynamicSeedData();
+
+        // Initialize xterm.js with JetBrains Mono and GNOME dark theme
+        const term = new Terminal({
+            cursorBlink: true,
+            cursorStyle: "block",
+            fontFamily: '"JetBrains Mono", "Courier New", monospace',
+            fontSize: 14,
+            lineHeight: 1.25,
+            theme: {
+                background: "#1e1e1e",
+                foreground: "#deddda",
+                cursor: "#57e389",
+                cursorAccent: "#1e1e1e",
+                selectionBackground: "rgba(98, 160, 234, 0.4)",
+                black: "#2e3436",
+                red: "#f66151",
+                green: "#57e389",
+                yellow: "#f8e45c",
+                blue: "#62a0ea",
+                magenta: "#c061cb",
+                cyan: "#47d4b9",
+                white: "#deddda",
+                brightBlack: "#5e5c64",
+                brightRed: "#ed333b",
+                brightGreen: "#33d17a",
+                brightYellow: "#f6d32d",
+                brightBlue: "#3584e4",
+                brightMagenta: "#9141ac",
+                brightCyan: "#26a269",
+                brightWhite: "#ffffff",
+            },
+        });
+
+        const fitAddon = new FitAddon.FitAddon();
+        term.loadAddon(fitAddon);
+
+        const terminalContainer =
+            document.getElementById("terminal-container");
+        term.open(terminalContainer);
+
+        function fitTerminal() {
+            try {
+                fitAddon.fit();
+                // Ensure at least 80 columns so tables never wrap
+                if (term.cols < 80) {
+                    term.resize(80, term.rows);
+                }
+            } catch (e) { }
+        }
+
+        fitTerminal();
+
+        window.addEventListener("resize", () => {
+            fitTerminal();
+        });
+
+        // Font scaling via Ctrl + MouseWheel ONLY when mouse pointer is inside the terminal container
+        terminalContainer.addEventListener(
+            "wheel",
+            (e) => {
+                if (e.ctrlKey) {
+                    e.preventDefault();
+                    let currentSize = term.options.fontSize || 14;
+                    if (e.deltaY < 0 && currentSize < 28) {
+                        term.options.fontSize = currentSize + 1;
+                    } else if (e.deltaY > 0 && currentSize > 10) {
+                        term.options.fontSize = currentSize - 1;
+                    }
+                    fitTerminal();
+                }
+            },
+            { passive: false },
+        );
+
+        // Input state management
+        let inputResolver = null;
+        let inputBuffer = "";
+
+        term.onData((data) => {
+            if (!inputResolver) {
+                return;
+            }
+
+            // Handle Enter (CR: \r or LF: \n)
+            if (data === "\r" || data === "\n") {
+                term.write("\r\n");
+                const submitted = inputBuffer;
+                inputBuffer = "";
+                const resolve = inputResolver;
+                inputResolver = null;
+                resolve(submitted);
+                return;
+            }
+
+            // Handle Backspace (DEL: \x7f or BS: \x08)
+            if (data === "\x7f" || data === "\b") {
+                if (inputBuffer.length > 0) {
+                    inputBuffer = inputBuffer.slice(0, -1);
+                    term.write("\b \b");
+                }
+                return;
+            }
+
+            // Handle Ctrl+C (\x03)
+            if (data === "\x03") {
+                term.write("^C\r\n");
+                inputBuffer = "";
+                const resolve = inputResolver;
+                inputResolver = null;
+                resolve("");
+                return;
+            }
+
+            // Printable character entry
+            if (data >= " " || data.length > 1) {
+                inputBuffer += data;
+                term.write(data);
+            }
+        });
+
+        // Clipboard Paste Handling (Ctrl+V / Cmd+V)
+        window.addEventListener("paste", async (e) => {
+            if (!inputResolver) return;
+            const text = (e.clipboardData || window.clipboardData).getData(
+                "text",
+            );
+            if (text) {
+                inputBuffer += text;
+                term.write(text);
+            }
+        });
+
+        const splashScreen = document.getElementById("splash-screen");
+        const splashStatus = document.getElementById("splash-status");
+
+        function updateStatus(message) {
+            if (splashStatus) {
+                splashStatus.textContent = message || "";
+            }
+        }
+
+        async function runApplication() {
+            try {
+                updateStatus(
+                    "Loading Java WebAssembly runtime (CheerpJ)...",
+                );
+
+                await cheerpjInit({
+                    version: 8,
+                    status: "none",
+                    natives: {
+                        async Java_web_WebTerminalManager_readLine(lib) {
+                            return new Promise((resolve) => {
+                                inputResolver = resolve;
+                            });
+                        },
+                        async Java_web_WebTerminalManager_print(lib, text) {
+                            const message =
+                                typeof text === "string"
+                                    ? text
+                                    : String(text || "");
+                            if (message) {
+                                term.write(
+                                    message.replace(/\r?\n/g, "\r\n"),
+                                );
+                            }
+                        },
+                        async Java_web_WebTerminalManager_getInitialCsv(
+                            lib,
+                            fileName,
+                        ) {
+                            return dynamicSeedCache[fileName] || "";
+                        },
+                    },
+                });
+
+                updateStatus("Launching Movie Streaming Management System...");
+
+                splashScreen.classList.add("hidden");
+                term.focus();
+
+                const rawPath = window.location.pathname;
+                const basePath = rawPath.substring(
+                    0,
+                    rawPath.lastIndexOf("/"),
+                );
+                const appPrefix = `/app${basePath}`;
+                const classPath = `${appPrefix}/web-runner.jar:${appPrefix}/fcode-becrew-movie-streaming-management.jar`;
+
+                await cheerpjRunMain("web.WebMain", classPath);
+            } catch (err) {
+                console.error("CheerpJ execution error:", err);
+                if (splashStatus) {
+                    splashStatus.textContent =
+                        "Runtime error: " + err.message;
+                }
+            }
+        }
+
+        // Reset data handler: Deletes IndexedDB and reloads page to generate live fresh data
+        document
+            .getElementById("btn-reset-data")
+            .addEventListener("click", async () => {
+                if (
+                    confirm(
+                        "Are you sure you want to reset all data and create a new sample dataset based on your current date?",
+                    )
+                ) {
+                    try {
+                        if (
+                            window.indexedDB &&
+                            window.indexedDB.databases
+                        ) {
+                            const dbs = await window.indexedDB.databases();
+                            for (const db of dbs) {
+                                if (db.name) {
+                                    window.indexedDB.deleteDatabase(
+                                        db.name,
+                                    );
+                                }
+                            }
+                        }
+                        window.location.reload();
+                    } catch (e) {
+                        window.location.reload();
+                    }
+                }
+            });
+
+        // Close button: Asks confirmation to exit/restart
+        document
+            .getElementById("btn-close-app")
+            .addEventListener("click", () => {
+                if (confirm("Do you want to reload the application?")) {
+                    window.location.reload();
+                }
+            });
+
+        window.addEventListener("load", () => {
+            runApplication();
+        });
+    </script>
+</body>
+
+</html>
