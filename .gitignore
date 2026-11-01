@@ -1,38 +1,50 @@
-# Byte-compiled / optimized / URL-encoded files
-target/
 *.class
+*.log
+*.ctxt
+.mtj.tmp/
+
 *.jar
 *.war
-*.ear
 *.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+*.class
 
-# Virtual machines
-*.ipr
-*.iws
-*.iml
-
-# IntelliJ IDEA
-.idea/
-out/
-
-# Eclipse
-.project
-.classpath
-.settings/
-bin/
-
-# Visual Studio Code
-.vscode/
-
-# Temporary / Backup / Logs
-*.log
-*.tmp
-*.bak
-*.swp
-*~
-.DS_Store
-Thumbs.db
-
-# OS / Crash dumps
 hs_err_pid*
 replay_pid*
+
+/build.xml
+/manifest.mf
+/nbproject/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+_site/
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+!*.code-workspace
+*.vsix
+
+.idea/
+src/main/main.iml
+src/test/test.iml
+
+data/
+
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
