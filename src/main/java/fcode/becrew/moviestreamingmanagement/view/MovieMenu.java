@@ -28,8 +28,8 @@ public class MovieMenu extends Menu {
             "Remove Movie"
     };
 
-    private static final String TABLE_BORDER = "+--------+--------------------------+--------------+------+---------+--------+";
-    private static final String TABLE_HEADER = "| ID     | Title                    | Category     | Year | Dur     | Rating |";
+    private static final String TABLE_BORDER = "+--------+---------------------------+--------------+------+----------+--------+";
+    private static final String TABLE_HEADER = "| ID     | Title                     | Category     | Year | Duration | Rating |";
 
     private final MovieController movieController;
     private final CategoryController categoryController;
@@ -178,8 +178,7 @@ public class MovieMenu extends Menu {
             System.out.println("  Active Sort   : " + sortDesc);
             renderMovieTable(displayList);
 
-            System.out.println(
-                    "Commands: [Keyword to search] | [Movie ID to inspect] | [F] Filter | [S] Sort | [R] Reset | [0] Return");
+            System.out.println("Options: [Search] | [Movie ID] | [F] Filter | [S] Sort | [R] Reset | [0] Return");
             String input = ConsoleUtil.readOptionalString("Enter command: ");
             if ("0".equals(input)) {
                 return;
@@ -521,9 +520,9 @@ public class MovieMenu extends Menu {
     }
 
     private void printMovieRow(String id, String title, String category, int year, int duration, double rating) {
-        System.out.printf("| %-6s | %-24s | %-12s | %4d | %4d min | %6.1f |%n",
+        System.out.printf("| %-6s | %-25s | %-12s | %4d | %4d min | %6.1f |%n",
                 TableFormatter.fit(id, 6),
-                TableFormatter.fit(title, 24),
+                TableFormatter.fit(title, 25),
                 TableFormatter.fit(category, 12),
                 year,
                 duration,

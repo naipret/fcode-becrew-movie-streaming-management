@@ -26,8 +26,8 @@ public class CategoryMenu extends Menu {
             "Remove Category"
     };
 
-    private static final String TABLE_BORDER = "+--------+--------------------+--------------------------------------+--------+";
-    private static final String TABLE_HEADER = "| ID     | Category Name      | Description                          | Movies |";
+    private static final String TABLE_BORDER = "+--------+--------------------+---------------------------------------+--------+";
+    private static final String TABLE_HEADER = "| ID     | Category Name      | Description                           | Movies |";
 
     private final CategoryController categoryController;
     private final MovieController movieController;
@@ -150,8 +150,8 @@ public class CategoryMenu extends Menu {
     }
 
     private void browseMoviesByCategory(Category category) {
-        String border = "+--------+--------------------------+------+---------+--------+------------+";
-        String header = "| ID     | Title                    | Year | Dur     | Rating | Views      |";
+        String border = "+--------+---------------------------+------+----------+--------+--------------+";
+        String header = "| ID     | Title                     | Year | Duration | Rating | Total Views  |";
 
         System.out.println();
         System.out.println("  MOVIES IN CATEGORY: " + category.getId() + " - " + category.getName());
@@ -164,13 +164,13 @@ public class CategoryMenu extends Menu {
         for (int i = 0; i < allMovies.size(); i++) {
             Movie m = allMovies.get(i);
             if (m.getCategoryId().equalsIgnoreCase(category.getId())) {
-                System.out.printf("| %-6s | %-24s | %4d | %4d min | %6.1f | %10s |%n",
+                System.out.printf("| %-6s | %-25s | %4d | %4d min | %6.1f | %12s |%n",
                         TableFormatter.fit(m.getId(), 6),
-                        TableFormatter.fit(m.getTitle(), 24),
+                        TableFormatter.fit(m.getTitle(), 25),
                         m.getReleaseYear(),
                         m.getDurationMinutes(),
                         m.getRating(),
-                        TableFormatter.fitRight(String.format(Locale.US, "%,d", m.getViewCount()), 10));
+                        TableFormatter.fitRight(String.format(Locale.US, "%,d", m.getViewCount()), 12));
                 count++;
             }
         }
@@ -311,10 +311,10 @@ public class CategoryMenu extends Menu {
     }
 
     private void printCategoryRow(String id, String name, String desc, int count) {
-        System.out.printf("| %-6s | %-18s | %-36s | %6d |%n",
+        System.out.printf("| %-6s | %-18s | %-37s | %6d |%n",
                 TableFormatter.fit(id, 6),
                 TableFormatter.fit(name, 18),
-                TableFormatter.fit(desc, 36),
+                TableFormatter.fit(desc, 37),
                 count);
     }
 

@@ -109,8 +109,8 @@ public class AnalyticsMenu extends Menu {
 
             List<TrendingCategorySummary> summaries = this.analyticsController.getTrendingCategories(windowDays);
 
-            String border = "+------+--------+--------------------------+------------------+------------------+";
-            String header = "| Rank | CatID  | Category Name            | Total Hours      | Total Sessions   |";
+            String border = "+------+--------+-------------------------+------------------+-----------------+";
+            String header = "| Rank | CatID  | Category Name           | Total Hours      | Total Sessions  |";
 
             System.out.println();
             System.out.println("  TRENDING CATEGORIES - LAST " + windowDays + " DAYS");
@@ -124,10 +124,10 @@ public class AnalyticsMenu extends Menu {
             } else {
                 for (int i = 0; i < summaries.size(); i++) {
                     TrendingCategorySummary item = summaries.get(i);
-                    System.out.printf("| %4d | %-6s | %-24s | %13.1f hrs | %16d |%n",
+                    System.out.printf("| %4d | %-6s | %-23s | %12.1f hrs | %15d |%n",
                             item.getRank(),
                             TableFormatter.fit(item.getCategoryId(), 6),
-                            TableFormatter.fit(item.getCategoryName(), 24),
+                            TableFormatter.fit(item.getCategoryName(), 23),
                             item.getTotalHours(),
                             item.getSessionCount());
                 }
@@ -148,8 +148,8 @@ public class AnalyticsMenu extends Menu {
 
             List<MovieRankSummary> ranked = this.analyticsController.getTopRankedMovies(limit);
 
-            String border = "+------+--------+--------------------------+--------+------------+------------+";
-            String header = "| Rank | ID     | Title                    | Rating | Views      | Score      |";
+            String border = "+------+--------+---------------------------+--------+------------+------------+";
+            String header = "| Rank | ID     | Title                     | Rating | Views      | Score      |";
 
             System.out.println();
             System.out.println("  TOP-" + limit + " RANKED MOVIES (WEIGHTED MAX-HEAP SCORING)");
@@ -163,10 +163,10 @@ public class AnalyticsMenu extends Menu {
             } else {
                 for (int i = 0; i < ranked.size(); i++) {
                     MovieRankSummary item = ranked.get(i);
-                    System.out.printf("| %4d | %-6s | %-24s | %6.1f | %10s | %10.3f |%n",
+                    System.out.printf("| %4d | %-6s | %-25s | %6.1f | %10s | %10.3f |%n",
                             item.getRank(),
                             TableFormatter.fit(item.getMovieId(), 6),
-                            TableFormatter.fit(item.getTitle(), 24),
+                            TableFormatter.fit(item.getTitle(), 25),
                             item.getRating(),
                             TableFormatter.fitRight(String.format(Locale.US, "%,d", item.getViewCount()), 10),
                             item.getScore());
