@@ -1,0 +1,70 @@
+name: Build and Publish Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: true
+
+jobs:
+  release:
+    name: Build & Package Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "8"
+
+      - name: Install Apache Ant
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ant
+
+      - name: Restore NetBeans project configuration
+        run: cp -r .github/netbeans/* .
+
+      - name: Compile and Package Core Application JAR
+        run: ant clean compile jar
+
+      - name: Prepare Release Archive
+        run: |
+          mkdir -p release-pkg/dist
+
+          # Copy NetBeans project structure to package root
+          cp -r .github/netbeans/* release-pkg/
+
+          # Copy core sources and scripts
+          cp -r src release-pkg/
+          cp -r scripts release-pkg/
+
+          # Copy pre-compiled distribution JAR
+          cp dist/fcode-becrew-movie-streaming-management.jar release-pkg/dist/
+
+          # Package single release zip
+          cd release-pkg
+          zip -r ../fcode-becrew-movie-streaming-management.zip .
+          cd ..
+
+      - name: Publish Rolling Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest Release
+          body: |
+            Automated continuous release generated from commit `${{ github.sha }}` on branch `main`.
+          files: fcode-becrew-movie-streaming-management.zip
+          draft: false
+          prerelease: false
+          make_latest: true
