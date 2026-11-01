@@ -1,6 +1,3 @@
-# EditorConfig configuration for Movie Streaming Management System
-# http://editorconfig.org
-
 root = true
 
 [*]
@@ -11,8 +8,29 @@ trim_trailing_whitespace = true
 indent_style = space
 indent_size = 4
 
-[*.{xml,yml,yaml,json,md,html,css}]
+[*.java]
+indent_style = space
+indent_size = 4
+max_line_length = 120
+
+[*.xml]
+indent_style = space
+indent_size = 4
+
+[*.{yml,yaml}]
+indent_style = space
 indent_size = 2
 
-[*.cmd]
-end_of_line = crlf
+[*.md]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = false
+max_line_length = 120
+
+[*.csv]
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.json]
+indent_style = space
+indent_size = 2

@@ -1,5 +1,0 @@
-id|username|password|fullName|email|role|createdAt
-USR-001|admin|admin123|System Administrator|admin@netflix.local|ADMIN|2026-01-01T00:00:00
-USR-002|john_doe|pass123|John Doe|john.doe@gmail.com|USER|2026-02-15T10:30:00
-USR-003|alice_smith|alice2026|Alice Smith|alice.smith@outlook.com|USER|2026-03-01T14:20:00
-USR-004|bob_wilson|bobsecure|Bob Wilson|bob.wilson@yahoo.com|USER|2026-04-10T09:15:00
