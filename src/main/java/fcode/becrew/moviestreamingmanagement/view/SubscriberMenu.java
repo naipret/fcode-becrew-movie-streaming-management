@@ -5,7 +5,6 @@ import fcode.becrew.moviestreamingmanagement.controller.SubscriberController;
 import fcode.becrew.moviestreamingmanagement.model.StreamingSession;
 import fcode.becrew.moviestreamingmanagement.model.Subscriber;
 import fcode.becrew.moviestreamingmanagement.util.ConsoleUtil;
-import fcode.becrew.moviestreamingmanagement.util.InputValidator;
 import fcode.becrew.moviestreamingmanagement.util.TableFormatter;
 import java.util.List;
 import java.util.Locale;

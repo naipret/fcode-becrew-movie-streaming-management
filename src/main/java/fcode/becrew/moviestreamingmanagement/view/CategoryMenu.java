@@ -5,7 +5,6 @@ import fcode.becrew.moviestreamingmanagement.controller.MovieController;
 import fcode.becrew.moviestreamingmanagement.model.Category;
 import fcode.becrew.moviestreamingmanagement.model.Movie;
 import fcode.becrew.moviestreamingmanagement.util.ConsoleUtil;
-import fcode.becrew.moviestreamingmanagement.util.InputValidator;
 import fcode.becrew.moviestreamingmanagement.util.TableFormatter;
 import java.util.ArrayList;
 import java.util.List;
