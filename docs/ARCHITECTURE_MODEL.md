@@ -169,7 +169,7 @@ classDiagram
         +saveToCsv() void
         +addCategory(String name, String description) Category
         +updateCategory(String id, String name, String description) void
-        +deleteCategory(String id, MovieController movieController) void
+        +deleteCategory(String id, boolean hasActiveMovies) void
         +findById(String id) Category
         +findByName(String name) Category
         +getAllActiveCategories() List~Category~
@@ -198,6 +198,7 @@ classDiagram
         +saveToCsv() void
         +recordSession(String subscriberId, String movieId, int watchedMinutes, LocalDateTime sessionDate) StreamingSession
         +cancelSession(String sessionId) void
+        +countActiveConcurrentStreams(String subscriberId, LocalDateTime atTime) int
         +findById(String sessionId) StreamingSession
         +getAllSessions() List~StreamingSession~
         +getSessionsBySubscriber(String subscriberId) List~StreamingSession~

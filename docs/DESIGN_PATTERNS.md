@@ -60,23 +60,30 @@ In Java console applications, instantiating multiple `new Scanner(System.in)` ob
 
 ### 3.2. Implementation in Codebase
 
-`ScannerManager` implements a thread-safe, eager Singleton managing the single `Scanner(System.in, "UTF-8")` instance throughout the application lifecycle:
+`ScannerManager` implements a thread-safe, eager Singleton managing the single `Scanner(System.in, StandardCharsets.UTF_8.name())` instance throughout the application lifecycle:
 
 ```java
 public final class ScannerManager {
 
-    private static final Scanner INSTANCE = new Scanner(System.in, "UTF-8");
+    private static final ScannerManager INSTANCE = new ScannerManager();
+
+    private final Scanner scanner;
 
     private ScannerManager() {
+        this.scanner = new Scanner(System.in, StandardCharsets.UTF_8.name());
     }
 
-    public static Scanner getInstance() {
+    public static ScannerManager getInstance() {
         return INSTANCE;
+    }
+
+    public Scanner getScanner() {
+        return this.scanner;
     }
 }
 ```
 
-`ConsoleUtil` accesses the shared console stream exclusively through `ScannerManager.getInstance()`, ensuring synchronized, predictable line reading across all console views.
+`ConsoleUtil` accesses the shared console stream exclusively through `ScannerManager.getInstance().getScanner()`, ensuring synchronized, predictable line reading across all console views.
 
 ---
 
@@ -108,7 +115,7 @@ Callers (such as `AnalyticsController` for monthly revenue projection) invoke `s
 
 ### 5.1. Context and Problem
 
-Every interactive console screen follows an identical navigation cycle: clear screen, render the centered 80-column breadcrumb banner, render the menu options (`[1]..[N]` and `[0]` Back/Exit), read a validated integer selection, dispatch the choice, and loop continuously until `0` is selected. Duplicating this control loop across six menu classes violates `DRY` and causes inconsistent terminal navigation.
+Every interactive console screen follows an identical navigation cycle: clear screen, render the centered 80-column breadcrumb banner, render the menu options (`[1]..[N]` and `[0]` Back or Exit), read a validated integer selection, dispatch the choice, and loop continuously until `0` is selected. Duplicating this control loop across six menu classes violates `DRY` and causes inconsistent terminal navigation.
 
 ### 5.2. Implementation in Codebase
 
