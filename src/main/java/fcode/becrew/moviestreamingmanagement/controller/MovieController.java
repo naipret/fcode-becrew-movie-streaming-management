@@ -347,16 +347,6 @@ public class MovieController {
         return Collections.unmodifiableList(active);
     }
 
-    /**
-     * Returns an unmodifiable list of all movie records including soft-deleted
-     * ones.
-     *
-     * @return unmodifiable list of all Movie entities
-     */
-    public List<Movie> getAllMovies() {
-        return Collections.unmodifiableList(new ArrayList<>(this.movies));
-    }
-
     private String generateNextId() {
         int max = 0;
         for (int i = 0; i < this.movies.size(); i++) {

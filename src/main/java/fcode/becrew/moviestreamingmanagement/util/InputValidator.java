@@ -14,22 +14,6 @@ import java.util.regex.Pattern;
  */
 public final class InputValidator {
 
-    /**
-     * Standard console date display and input pattern (dd/MM/yyyy).
-     */
-    public static final String DISPLAY_DATE_PATTERN = "dd/MM/yyyy";
-
-    /**
-     * Standard console month-year input pattern (MM/yyyy).
-     */
-    public static final String DISPLAY_MONTH_PATTERN = "MM/yyyy";
-
-    /**
-     * Standard console timestamp pattern (dd/MM/yyyy HH:mm).
-     */
-    public static final String DISPLAY_TIMESTAMP_PATTERN = "dd/MM/yyyy HH:mm";
-
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     private static final Pattern PHONE_REGEX = Pattern.compile("^0[35789]\\d{8}$");
@@ -230,48 +214,6 @@ public final class InputValidator {
     }
 
     /**
-     * Parses a date string in dd/MM/yyyy format, supporting shorthand day or
-     * day/month input.
-     *
-     * @param raw the raw input date string
-     * @return the parsed LocalDate object
-     * @throws IllegalArgumentException if parsing fails
-     */
-    public static LocalDate parseDate(String raw) {
-        if (raw == null || raw.trim().isEmpty()) {
-            throw new IllegalArgumentException("Date string cannot be empty.");
-        }
-        String clean = raw.trim();
-        LocalDate today = LocalDate.now();
-
-        if (clean.matches("^\\d{1,2}$")) {
-            int day = Integer.parseInt(clean);
-            try {
-                return LocalDate.of(today.getYear(), today.getMonthValue(), day);
-            } catch (DateTimeException e) {
-                throw new IllegalArgumentException("Invalid day " + day + " for current month/year.");
-            }
-        }
-
-        if (clean.matches("^\\d{1,2}/\\d{1,2}$")) {
-            String[] parts = clean.split("/");
-            int day = Integer.parseInt(parts[0]);
-            int month = Integer.parseInt(parts[1]);
-            try {
-                return LocalDate.of(today.getYear(), month, day);
-            } catch (DateTimeException e) {
-                throw new IllegalArgumentException("Invalid date " + clean + " for current year.");
-            }
-        }
-
-        try {
-            return LocalDate.parse(clean, DATE_FORMATTER);
-        } catch (DateTimeException e) {
-            throw new IllegalArgumentException("Date must follow format dd/MM/yyyy (e.g. 28/10/2026).");
-        }
-    }
-
-    /**
      * Parses a YearMonth string in MM/yyyy format.
      *
      * @param raw the raw input month string
@@ -300,16 +242,6 @@ public final class InputValidator {
             throw new IllegalArgumentException("Month must be between 1 and 12.");
         }
         return YearMonth.of(year, month);
-    }
-
-    /**
-     * Formats a LocalDate into standard display pattern dd/MM/yyyy.
-     *
-     * @param date the LocalDate to format
-     * @return the formatted date string, or empty if date is null
-     */
-    public static String formatDate(LocalDate date) {
-        return (date == null) ? "" : date.format(DATE_FORMATTER);
     }
 
     /**

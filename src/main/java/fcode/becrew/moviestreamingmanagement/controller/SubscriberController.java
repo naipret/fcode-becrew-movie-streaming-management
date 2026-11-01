@@ -269,16 +269,6 @@ public class SubscriberController {
         return Collections.unmodifiableList(active);
     }
 
-    /**
-     * Returns an unmodifiable list of all subscriber records including soft-deleted
-     * ones.
-     *
-     * @return unmodifiable list of all Subscriber records
-     */
-    public List<Subscriber> getAllSubscribers() {
-        return Collections.unmodifiableList(new ArrayList<>(this.subscribers));
-    }
-
     private String generateNextId() {
         int max = 0;
         for (int i = 0; i < this.subscribers.size(); i++) {

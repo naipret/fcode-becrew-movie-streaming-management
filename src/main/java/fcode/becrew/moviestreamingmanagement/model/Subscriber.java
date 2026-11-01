@@ -12,9 +12,9 @@ import fcode.becrew.moviestreamingmanagement.util.InputValidator;
 public abstract class Subscriber {
 
     private final String id;
-    private String fullName;
-    private String phone;
-    private String email;
+    private final String fullName;
+    private final String phone;
+    private final String email;
     private boolean isDeleted;
 
     /**
@@ -104,15 +104,6 @@ public abstract class Subscriber {
     }
 
     /**
-     * Updates the subscriber full name.
-     *
-     * @param fullName the new full name
-     */
-    public void setFullName(String fullName) {
-        this.fullName = InputValidator.normalizeFullName(fullName);
-    }
-
-    /**
      * Returns the mobile phone number.
      *
      * @return the phone number
@@ -122,30 +113,12 @@ public abstract class Subscriber {
     }
 
     /**
-     * Updates the mobile phone number.
-     *
-     * @param phone the new phone number
-     */
-    public void setPhone(String phone) {
-        this.phone = InputValidator.normalizePhone(phone);
-    }
-
-    /**
      * Returns the email address.
      *
      * @return the email address
      */
     public String getEmail() {
         return this.email;
-    }
-
-    /**
-     * Updates the email address.
-     *
-     * @param email the new email address
-     */
-    public void setEmail(String email) {
-        this.email = InputValidator.normalizeEmail(email);
     }
 
     /**

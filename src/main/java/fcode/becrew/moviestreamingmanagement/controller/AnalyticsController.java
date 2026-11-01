@@ -257,7 +257,6 @@ public class AnalyticsController {
         }
 
         return new MonthlyPerformanceSummary(
-                month,
                 activeSubscribers.size(),
                 monthSessions,
                 monthHours,
@@ -434,7 +433,6 @@ public class AnalyticsController {
      */
     public static final class MonthlyPerformanceSummary {
 
-        private final YearMonth month;
         private final int activeSubscribers;
         private final int totalSessions;
         private final double totalHours;
@@ -444,25 +442,19 @@ public class AnalyticsController {
         /**
          * Constructs MonthlyPerformanceSummary.
          *
-         * @param month             the reported YearMonth
          * @param activeSubscribers total active subscribers
          * @param totalSessions     total sessions in month
          * @param totalHours        total streaming hours
          * @param completionRate    monthly completion percentage
          * @param estimatedRevenue  projected monthly subscription revenue
          */
-        public MonthlyPerformanceSummary(YearMonth month, int activeSubscribers, int totalSessions,
+        public MonthlyPerformanceSummary(int activeSubscribers, int totalSessions,
                 double totalHours, double completionRate, double estimatedRevenue) {
-            this.month = month;
             this.activeSubscribers = activeSubscribers;
             this.totalSessions = totalSessions;
             this.totalHours = totalHours;
             this.completionRate = completionRate;
             this.estimatedRevenue = estimatedRevenue;
-        }
-
-        public YearMonth getMonth() {
-            return month;
         }
 
         public int getActiveSubscribers() {

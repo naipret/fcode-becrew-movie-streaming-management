@@ -102,7 +102,6 @@ public final class CsvUtil {
             try {
                 Files.deleteIfExists(tempPath);
             } catch (IOException ignored) {
-                // Ignore cleanup failure
             }
             throw new IllegalStateException("Failed to write temporary CSV: " + tempPath.getFileName(), e);
         }
