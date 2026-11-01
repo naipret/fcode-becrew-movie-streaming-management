@@ -1,16 +1,32 @@
-## Summary of Changes
-<!-- Provide a brief explanation of the motivation and changes included in this PR -->
+## Pull Request Summary
 
-## Type of Change
-- [ ] `feat`: New feature
-- [ ] `fix`: Bug fix
-- [ ] `refactor`: Code refactoring without behavior change
-- [ ] `test`: Added or updated unit/integration tests
-- [ ] `docs`: Documentation updates
-- [ ] `chore`: Build or tooling updates
+### Description of Changes
 
-## Checklist
-- [ ] My code strictly adheres to Java 8 without third-party runtime frameworks.
-- [ ] All unit tests pass locally (`./mvnw test`).
-- [ ] Checkstyle validation passes with 0 errors (`./mvnw checkstyle:check`).
-- [ ] Commit messages follow the Conventional Commits specification.
+<!-- Provide a clear, concise summary of what this PR introduces or fixes. -->
+
+### Related Issue and Business Rules
+
+- Closes: #X
+- Relevant Business Rules: `BRX`
+
+---
+
+## Pre-Merge Verification Checklist
+
+- [ ] Java 8 Compatibility: Code targets Java SE 8 strictly with no Java 9+ APIs.
+- [ ] Build and Test Verification: `ant clean compile jar` completes with 0 errors and 0 warnings.
+- [ ] Javadoc and Traceability: All classes and methods use plain-text Javadoc (`@param`, `@return`, `@throws`) with `BR-*` tags and zero single-line `//` comments.
+- [ ] Console TUI Standards:
+  - [ ] All terminal text, prompts, and table headers are written in English.
+  - [ ] All console views stay strictly within the 80-column width limit.
+  - [ ] Borders use only basic ASCII characters (`+`, `-`, `=`, `|`, `*`).
+  - [ ] Menus and input flows support `[0]` to cancel or return cleanly.
+- [ ] CSV Persistence: File writes execute atomically via `CsvUtil.writeAtomic` with uniform header rows.
+- [ ] Technical Documentation: Any new or modified markdown documentation complies with [Writing Style Guide](docs/WRITING_STYLE.md).
+
+---
+
+## Reviewer Checklist
+
+- [ ] Architecture boundaries (`model`, `view`, `controller`, `util`) and naming conventions are respected.
+- [ ] No unhandled runtime exceptions or resource leaks exist.
