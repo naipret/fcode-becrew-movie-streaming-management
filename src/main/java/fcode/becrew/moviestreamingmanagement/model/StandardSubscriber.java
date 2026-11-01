@@ -1,7 +1,8 @@
 package fcode.becrew.moviestreamingmanagement.model;
 
 /**
- * Concrete subscriber tier providing standard definition and 2 concurrent streams.
+ * Concrete subscriber tier providing standard definition and 2 concurrent
+ * streams.
  */
 public class StandardSubscriber extends Subscriber {
 

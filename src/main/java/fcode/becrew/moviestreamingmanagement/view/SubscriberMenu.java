@@ -5,7 +5,6 @@ import fcode.becrew.moviestreamingmanagement.controller.SubscriberController;
 import fcode.becrew.moviestreamingmanagement.model.StreamingSession;
 import fcode.becrew.moviestreamingmanagement.model.Subscriber;
 import fcode.becrew.moviestreamingmanagement.util.ConsoleUtil;
-import fcode.becrew.moviestreamingmanagement.util.InputValidator;
 import fcode.becrew.moviestreamingmanagement.util.TableFormatter;
 import java.util.List;
 import java.util.Locale;
@@ -24,10 +23,8 @@ public class SubscriberMenu extends Menu {
             "Remove Subscriber"
     };
 
-    private static final String TABLE_BORDER =
-            "+--------+----------------------+------------+----------------------+----------+";
-    private static final String TABLE_HEADER =
-            "| ID     | Full Name            | Phone      | Email                | Tier     |";
+    private static final String TABLE_BORDER = "+--------+----------------------+------------+----------------------+----------+";
+    private static final String TABLE_HEADER = "| ID     | Full Name            | Phone      | Email                | Tier     |";
 
     private final SubscriberController subscriberController;
     private final StreamingSessionController sessionController;
@@ -39,7 +36,7 @@ public class SubscriberMenu extends Menu {
      * @param sessionController    collaborator for subscriber session statistics
      */
     public SubscriberMenu(SubscriberController subscriberController,
-                          StreamingSessionController sessionController) {
+            StreamingSessionController sessionController) {
         super("MOVIE STREAMING MANAGEMENT SYSTEM > [3] SUBSCRIBERS", MENU_OPTIONS);
         if (subscriberController == null || sessionController == null) {
             throw new IllegalArgumentException("Controllers cannot be null.");
@@ -173,18 +170,34 @@ public class SubscriberMenu extends Menu {
         String border = "+" + TableFormatter.repeat('-', TableFormatter.SCREEN_WIDTH - 2) + "+";
         System.out.println();
         System.out.println(border);
-        System.out.println("| " + TableFormatter.fit("SUBSCRIBER PROFILE: " + sub.getId() + " - " + sub.getFullName(), TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| " + TableFormatter.fit("SUBSCRIBER PROFILE: " + sub.getId() + " - " + sub.getFullName(),
+                TableFormatter.SCREEN_WIDTH - 4) + " |");
         System.out.println(border);
-        System.out.println("| " + TableFormatter.fit("Phone Number   : " + sub.getPhone(), TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Email Address  : " + sub.getEmail(), TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Plan Tier      : " + sub.getTierName() + " Tier", TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Monthly Fee    : " + String.format(Locale.US, "$%.2f / month", sub.calculateMonthlyFee()), TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Max Streams    : " + sub.getMaxConcurrentStreams() + " concurrent devices", TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| "
+                + TableFormatter.fit("Phone Number   : " + sub.getPhone(), TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| "
+                + TableFormatter.fit("Email Address  : " + sub.getEmail(), TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| "
+                + TableFormatter.fit("Plan Tier      : " + sub.getTierName() + " Tier", TableFormatter.SCREEN_WIDTH - 4)
+                + " |");
+        System.out.println("| " + TableFormatter.fit(
+                "Monthly Fee    : " + String.format(Locale.US, "$%.2f / month", sub.calculateMonthlyFee()),
+                TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println(
+                "| " + TableFormatter.fit("Max Streams    : " + sub.getMaxConcurrentStreams() + " concurrent devices",
+                        TableFormatter.SCREEN_WIDTH - 4) + " |");
         System.out.println(border);
-        System.out.println("| " + TableFormatter.fit("STREAMING ACTIVITY SUMMARY", TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Total Sessions : " + sessions.size() + " recorded sessions", TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Total Watch Time: " + String.format(Locale.US, "%.1f hours (%d minutes)", totalHours, totalMinutes), TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Completion Rate: " + String.format(Locale.US, "%.1f%% (%d completed movies)", completionRate, completed), TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println(
+                "| " + TableFormatter.fit("STREAMING ACTIVITY SUMMARY", TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| " + TableFormatter.fit("Total Sessions : " + sessions.size() + " recorded sessions",
+                TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| " + TableFormatter.fit(
+                "Total Watch Time: " + String.format(Locale.US, "%.1f hours (%d minutes)", totalHours, totalMinutes),
+                TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| " + TableFormatter.fit(
+                "Completion Rate: "
+                        + String.format(Locale.US, "%.1f%% (%d completed movies)", completionRate, completed),
+                TableFormatter.SCREEN_WIDTH - 4) + " |");
         System.out.println(border);
         System.out.println();
     }
@@ -316,7 +329,8 @@ public class SubscriberMenu extends Menu {
         System.out.println(TABLE_HEADER);
         System.out.println(TABLE_BORDER);
         if (subscriberList.isEmpty()) {
-            System.out.println("|" + TableFormatter.center("No active subscribers found.", TableFormatter.SCREEN_WIDTH - 2) + "|");
+            System.out.println(
+                    "|" + TableFormatter.center("No active subscribers found.", TableFormatter.SCREEN_WIDTH - 2) + "|");
         } else {
             for (int i = 0; i < subscriberList.size(); i++) {
                 Subscriber s = subscriberList.get(i);

@@ -14,8 +14,7 @@ public static final int DEFAULT_TRENDING_DAYS = 7;
 public static final int DEFAULT_TOP_K_LIMIT = 10;
 public static final double STANDARD_MONTHLY_FEE = 7.99;
 public static final double PREMIUM_MONTHLY_FEE = 14.99;
-public static final String DISPLAY_DATE_PATTERN = "dd/MM/yyyy";
-public static final String DISPLAY_TIMESTAMP_PATTERN = "dd/MM/yyyy HH:mm";
+public static final String TIMESTAMP_PATTERN = "dd/MM/yyyy HH:mm";
 ```
 
 ---

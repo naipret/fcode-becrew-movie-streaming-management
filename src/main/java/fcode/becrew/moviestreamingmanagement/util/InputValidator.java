@@ -1,6 +1,5 @@
 package fcode.becrew.moviestreamingmanagement.util;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -14,22 +13,6 @@ import java.util.regex.Pattern;
  */
 public final class InputValidator {
 
-    /**
-     * Standard console date display and input pattern (dd/MM/yyyy).
-     */
-    public static final String DISPLAY_DATE_PATTERN = "dd/MM/yyyy";
-
-    /**
-     * Standard console month-year input pattern (MM/yyyy).
-     */
-    public static final String DISPLAY_MONTH_PATTERN = "MM/yyyy";
-
-    /**
-     * Standard console timestamp pattern (dd/MM/yyyy HH:mm).
-     */
-    public static final String DISPLAY_TIMESTAMP_PATTERN = "dd/MM/yyyy HH:mm";
-
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     private static final Pattern PHONE_REGEX = Pattern.compile("^0[35789]\\d{8}$");
@@ -47,7 +30,8 @@ public final class InputValidator {
      * @param rawId  the raw identifier input, may be shorthand
      * @param prefix the expected prefix character
      * @return the normalized canonical 6-character identifier
-     * @throws IllegalArgumentException if the raw identifier is invalid or does not match prefix
+     * @throws IllegalArgumentException if the raw identifier is invalid or does not
+     *                                  match prefix
      */
     public static String normalizeId(String rawId, char prefix) {
         if (rawId == null || rawId.trim().isEmpty()) {
@@ -85,7 +69,8 @@ public final class InputValidator {
      * @param rawText   the raw text string
      * @param fieldName the display name of the field for error messages
      * @return the trimmed, sanitized string
-     * @throws IllegalArgumentException if the text is empty or contains non-ASCII characters
+     * @throws IllegalArgumentException if the text is empty or contains non-ASCII
+     *                                  characters
      */
     public static String normalizeText(String rawText, String fieldName) {
         if (rawText == null || rawText.trim().isEmpty()) {
@@ -105,7 +90,8 @@ public final class InputValidator {
      *
      * @param rawName the raw name input
      * @return the title-cased normalized full name
-     * @throws IllegalArgumentException if the name is empty, has non-ASCII characters, or contains digits
+     * @throws IllegalArgumentException if the name is empty, has non-ASCII
+     *                                  characters, or contains digits
      */
     public static String normalizeFullName(String rawName) {
         String clean = normalizeText(rawName, "Full name");
@@ -149,7 +135,8 @@ public final class InputValidator {
         }
         String clean = rawPhone.replaceAll("[^0-9]", "");
         if (!PHONE_REGEX.matcher(clean).matches()) {
-            throw new IllegalArgumentException("Phone number must be a valid 10-digit mobile number (e.g. 0901234567).");
+            throw new IllegalArgumentException(
+                    "Phone number must be a valid 10-digit mobile number (e.g. 0901234567).");
         }
         return clean;
     }
@@ -194,7 +181,8 @@ public final class InputValidator {
     }
 
     /**
-     * Validates that a movie release year is between 1888 and current year plus five.
+     * Validates that a movie release year is between 1888 and current year plus
+     * five.
      *
      * @param year the release year to validate
      * @throws IllegalArgumentException if release year is invalid
@@ -207,11 +195,13 @@ public final class InputValidator {
     }
 
     /**
-     * Validates that watched minutes is positive and does not exceed maximum allowable threshold.
+     * Validates that watched minutes is positive and does not exceed maximum
+     * allowable threshold.
      *
      * @param watchedMinutes the minutes watched in a session
      * @param maxAllowed     the maximum allowed minutes for the session
-     * @throws IllegalArgumentException if watched minutes is non-positive or exceeds maximum allowed
+     * @throws IllegalArgumentException if watched minutes is non-positive or
+     *                                  exceeds maximum allowed
      */
     public static void validateWatchedMinutes(int watchedMinutes, int maxAllowed) {
         if (watchedMinutes <= 0) {
@@ -219,47 +209,6 @@ public final class InputValidator {
         }
         if (watchedMinutes > maxAllowed) {
             throw new IllegalArgumentException("Watched minutes cannot exceed " + maxAllowed + " minutes.");
-        }
-    }
-
-    /**
-     * Parses a date string in dd/MM/yyyy format, supporting shorthand day or day/month input.
-     *
-     * @param raw the raw input date string
-     * @return the parsed LocalDate object
-     * @throws IllegalArgumentException if parsing fails
-     */
-    public static LocalDate parseDate(String raw) {
-        if (raw == null || raw.trim().isEmpty()) {
-            throw new IllegalArgumentException("Date string cannot be empty.");
-        }
-        String clean = raw.trim();
-        LocalDate today = LocalDate.now();
-
-        if (clean.matches("^\\d{1,2}$")) {
-            int day = Integer.parseInt(clean);
-            try {
-                return LocalDate.of(today.getYear(), today.getMonthValue(), day);
-            } catch (DateTimeException e) {
-                throw new IllegalArgumentException("Invalid day " + day + " for current month/year.");
-            }
-        }
-
-        if (clean.matches("^\\d{1,2}/\\d{1,2}$")) {
-            String[] parts = clean.split("/");
-            int day = Integer.parseInt(parts[0]);
-            int month = Integer.parseInt(parts[1]);
-            try {
-                return LocalDate.of(today.getYear(), month, day);
-            } catch (DateTimeException e) {
-                throw new IllegalArgumentException("Invalid date " + clean + " for current year.");
-            }
-        }
-
-        try {
-            return LocalDate.parse(clean, DATE_FORMATTER);
-        } catch (DateTimeException e) {
-            throw new IllegalArgumentException("Date must follow format dd/MM/yyyy (e.g. 28/10/2026).");
         }
     }
 
@@ -292,16 +241,6 @@ public final class InputValidator {
             throw new IllegalArgumentException("Month must be between 1 and 12.");
         }
         return YearMonth.of(year, month);
-    }
-
-    /**
-     * Formats a LocalDate into standard display pattern dd/MM/yyyy.
-     *
-     * @param date the LocalDate to format
-     * @return the formatted date string, or empty if date is null
-     */
-    public static String formatDate(LocalDate date) {
-        return (date == null) ? "" : date.format(DATE_FORMATTER);
     }
 
     /**

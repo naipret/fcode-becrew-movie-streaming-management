@@ -5,7 +5,6 @@ import fcode.becrew.moviestreamingmanagement.controller.MovieController;
 import fcode.becrew.moviestreamingmanagement.model.Category;
 import fcode.becrew.moviestreamingmanagement.model.Movie;
 import fcode.becrew.moviestreamingmanagement.util.ConsoleUtil;
-import fcode.becrew.moviestreamingmanagement.util.InputValidator;
 import fcode.becrew.moviestreamingmanagement.util.TableFormatter;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,7 +16,8 @@ import java.util.function.Predicate;
 /**
  * Interactive 80-column console menu for managing the movie catalog:
  * adding movies, viewing with integrated keyword search, multi-condition
- * predicate filtering, sorting, inspecting detail cards, updating, and soft-deleting.
+ * predicate filtering, sorting, inspecting detail cards, updating, and
+ * soft-deleting.
  */
 public class MovieMenu extends Menu {
 
@@ -28,10 +28,8 @@ public class MovieMenu extends Menu {
             "Remove Movie"
     };
 
-    private static final String TABLE_BORDER =
-            "+--------+--------------------------+--------------+------+---------+--------+";
-    private static final String TABLE_HEADER =
-            "| ID     | Title                    | Category     | Year | Dur     | Rating |";
+    private static final String TABLE_BORDER = "+--------+---------------------------+--------------+------+----------+--------+";
+    private static final String TABLE_HEADER = "| ID     | Title                     | Category     | Year | Duration | Rating |";
 
     private final MovieController movieController;
     private final CategoryController categoryController;
@@ -180,7 +178,7 @@ public class MovieMenu extends Menu {
             System.out.println("  Active Sort   : " + sortDesc);
             renderMovieTable(displayList);
 
-            System.out.println("Commands: [Keyword to search] | [Movie ID to inspect] | [F] Filter | [S] Sort | [R] Reset | [0] Return");
+            System.out.println("Options: [Search] | [Movie ID] | [F] Filter | [S] Sort | [R] Reset | [0] Return");
             String input = ConsoleUtil.readOptionalString("Enter command: ");
             if ("0".equals(input)) {
                 return;
@@ -496,13 +494,15 @@ public class MovieMenu extends Menu {
         System.out.println(TABLE_HEADER);
         System.out.println(TABLE_BORDER);
         if (movieList.isEmpty()) {
-            System.out.println("|" + TableFormatter.center("No active movies found.", TableFormatter.SCREEN_WIDTH - 2) + "|");
+            System.out.println(
+                    "|" + TableFormatter.center("No active movies found.", TableFormatter.SCREEN_WIDTH - 2) + "|");
         } else {
             for (int i = 0; i < movieList.size(); i++) {
                 Movie m = movieList.get(i);
                 Category cat = this.categoryController.findByIdIncludeDeleted(m.getCategoryId());
                 String catName = (cat == null) ? m.getCategoryId() : cat.getName();
-                printMovieRow(m.getId(), m.getTitle(), catName, m.getReleaseYear(), m.getDurationMinutes(), m.getRating());
+                printMovieRow(m.getId(), m.getTitle(), catName, m.getReleaseYear(), m.getDurationMinutes(),
+                        m.getRating());
             }
         }
         System.out.println(TABLE_BORDER);
@@ -520,9 +520,9 @@ public class MovieMenu extends Menu {
     }
 
     private void printMovieRow(String id, String title, String category, int year, int duration, double rating) {
-        System.out.printf("| %-6s | %-24s | %-12s | %4d | %4d min | %6.1f |%n",
+        System.out.printf("| %-6s | %-25s | %-12s | %4d | %4d min | %6.1f |%n",
                 TableFormatter.fit(id, 6),
-                TableFormatter.fit(title, 24),
+                TableFormatter.fit(title, 25),
                 TableFormatter.fit(category, 12),
                 year,
                 duration,
@@ -536,16 +536,27 @@ public class MovieMenu extends Menu {
 
         System.out.println();
         System.out.println(border);
-        System.out.println("| " + TableFormatter.fit("MOVIE DETAILS: " + movie.getId() + " - " + movie.getTitle(), TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| " + TableFormatter.fit("MOVIE DETAILS: " + movie.getId() + " - " + movie.getTitle(),
+                TableFormatter.SCREEN_WIDTH - 4) + " |");
         System.out.println(border);
-        System.out.println("| " + TableFormatter.fit("Category   : " + catName + " (" + movie.getCategoryId() + ")", TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Director   : " + movie.getDirector(), TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Cast       : " + movie.getCast(), TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Released   : " + movie.getReleaseYear(), TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Duration   : " + movie.getDurationMinutes() + " minutes", TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Rating     : " + String.format(Locale.US, "%.1f / 10.0", movie.getRating()), TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Total Views: " + String.format(Locale.US, "%,d views", movie.getViewCount()), TableFormatter.SCREEN_WIDTH - 4) + " |");
-        System.out.println("| " + TableFormatter.fit("Status     : " + (movie.isDeleted() ? "Soft-Deleted" : "Active"), TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| " + TableFormatter.fit("Category   : " + catName + " (" + movie.getCategoryId() + ")",
+                TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| "
+                + TableFormatter.fit("Director   : " + movie.getDirector(), TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println(
+                "| " + TableFormatter.fit("Cast       : " + movie.getCast(), TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| "
+                + TableFormatter.fit("Released   : " + movie.getReleaseYear(), TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| " + TableFormatter.fit("Duration   : " + movie.getDurationMinutes() + " minutes",
+                TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println(
+                "| " + TableFormatter.fit("Rating     : " + String.format(Locale.US, "%.1f / 10.0", movie.getRating()),
+                        TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println(
+                "| " + TableFormatter.fit("Total Views: " + String.format(Locale.US, "%,d views", movie.getViewCount()),
+                        TableFormatter.SCREEN_WIDTH - 4) + " |");
+        System.out.println("| " + TableFormatter.fit("Status     : " + (movie.isDeleted() ? "Soft-Deleted" : "Active"),
+                TableFormatter.SCREEN_WIDTH - 4) + " |");
         System.out.println(border);
     }
 }

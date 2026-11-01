@@ -4,7 +4,8 @@ import fcode.becrew.moviestreamingmanagement.util.InputValidator;
 import java.time.LocalDateTime;
 
 /**
- * Domain record representing an individual playback streaming session by a subscriber.
+ * Domain record representing an individual playback streaming session by a
+ * subscriber.
  */
 public class StreamingSession {
 
@@ -26,7 +27,7 @@ public class StreamingSession {
      * @param isCompleted    true if full runtime was watched, false if partial
      */
     public StreamingSession(String sessionId, String subscriberId, String movieId,
-                            LocalDateTime sessionDate, int watchedMinutes, boolean isCompleted) {
+            LocalDateTime sessionDate, int watchedMinutes, boolean isCompleted) {
         this.sessionId = InputValidator.normalizeId(sessionId, 'S');
         this.subscriberId = InputValidator.normalizeId(subscriberId, 'U');
         this.movieId = InputValidator.normalizeId(movieId, 'M');

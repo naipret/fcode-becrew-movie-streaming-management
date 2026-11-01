@@ -7,7 +7,6 @@
 ### Related Issue and Business Rules
 
 - Closes: #X
-- Relevant Business Rules: `BRX`
 
 ---
 
@@ -15,7 +14,7 @@
 
 - [ ] Java 8 Compatibility: Code targets Java SE 8 strictly with no Java 9+ APIs.
 - [ ] Build and Test Verification: `ant clean compile jar` completes with 0 errors and 0 warnings.
-- [ ] Javadoc and Traceability: All classes and methods use plain-text Javadoc (`@param`, `@return`, `@throws`) with `BR-*` tags and zero single-line `//` comments.
+- [ ] Javadoc Documentation: All classes and methods use plain-text Javadoc (`@param`, `@return`, `@throws`) and zero single-line `//` comments.
 - [ ] Console TUI Standards:
   - [ ] All terminal text, prompts, and table headers are written in English.
   - [ ] All console views stay strictly within the 80-column width limit.

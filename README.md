@@ -95,7 +95,7 @@ Experience the complete application directly inside your web browser without ins
 
 All architectural decisions, domain rules, and coding standards are maintained in the [`docs/`](docs/) directory:
 
-1. [Business Rules](docs/BUSINESS_RULES.md): Invariants `BR1` through `BR35` governing genre categories, movie catalog, subscriber tiers, streaming sessions, analytical metrics, and soft deletes.
+1. [Business Rules](docs/BUSINESS_RULES.md): Domain invariants governing genre categories, movie catalog, subscriber tiers, streaming sessions, analytical metrics, and soft deletes.
 2. [Architecture and Data Model](docs/ARCHITECTURE_MODEL.md): 3-tier MVC package boundaries, UML class hierarchy, and CSV schemas.
 3. [Design Principles](docs/DESIGN_PRINCIPLES.md): Four OOP pillars, SOLID principles, and core engineering principles (`SoC`, `DRY`, `KISS`, `YAGNI`).
 4. [Design Patterns](docs/DESIGN_PATTERNS.md): Factory Method, Atomic CSV Persistence, Singleton, Strategy, and Template Method patterns.

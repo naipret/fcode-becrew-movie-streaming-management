@@ -51,6 +51,7 @@ This document defines the domain invariants, validation constraints, streaming s
 | Automatic Playback Completion Flag | If the recorded watched minutes equal or exceed the total runtime of the movie (`watchedMinutes >= movie.durationMinutes`), the session is automatically marked as complete (`isCompleted = true`). |
 | View Count Synchronization | Recording a valid streaming session automatically increments the cumulative `viewCount` of the referenced movie by one. Cancelling an erroneous session decrements the view count by one. |
 | Session Timestamp Invariant | Streaming session timestamps must not be set to future dates relative to current system time. |
+| Concurrent Streaming Limit Enforcement | Active concurrent streams for a subscriber cannot exceed their subscription tier capacity (2 concurrent streams for Standard tier, 4 concurrent streams for Premium tier) at the time of session recording. |
 
 ---
 

@@ -22,9 +22,9 @@ assignees: ''
 
 ## Enforced Business Rules
 
-<!-- List all Business Rules enforced in this task, e.g., BR3, BR7, BR24. -->
+<!-- List domain business rules enforced in this task (see docs/BUSINESS_RULES.md). -->
 
-- `BRX`:
+- Rule Name: Description of enforcement
 
 ---
 
@@ -36,7 +36,7 @@ Implementation requirements:
 
 - Target Java SE 8 strictly (no `var`, `List.of()`, or Java 9+ APIs).
 - Document all classes and methods using plain-text Javadoc (`@param`, `@return`, `@throws`) without HTML tags or single-line `//` comments.
-- Include explicit `BR-*` traceability tags inside the Javadoc of methods that enforce business rules.
+- Include descriptive Javadoc on methods that enforce business rules without using arbitrary number tags.
 - Ensure all console prompts and table headers are written in English, fit within 80 columns, and use basic ASCII characters.
 
 ---

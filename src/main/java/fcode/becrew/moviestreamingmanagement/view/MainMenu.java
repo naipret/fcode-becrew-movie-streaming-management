@@ -34,10 +34,10 @@ public class MainMenu extends Menu {
      * @throws IllegalArgumentException if any submenu is null
      */
     public MainMenu(MovieMenu movieMenu,
-                    CategoryMenu categoryMenu,
-                    SubscriberMenu subscriberMenu,
-                    StreamingSessionMenu streamingSessionMenu,
-                    AnalyticsMenu analyticsMenu) {
+            CategoryMenu categoryMenu,
+            SubscriberMenu subscriberMenu,
+            StreamingSessionMenu streamingSessionMenu,
+            AnalyticsMenu analyticsMenu) {
         super("MOVIE STREAMING MANAGEMENT SYSTEM", MENU_OPTIONS);
         if (movieMenu == null || categoryMenu == null || subscriberMenu == null
                 || streamingSessionMenu == null || analyticsMenu == null) {

@@ -1,7 +1,6 @@
 package fcode.becrew.moviestreamingmanagement.util;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -96,7 +95,8 @@ public final class ConsoleUtil {
     }
 
     /**
-     * Reads an integer with an optional default value on pressing Enter, or null on 0.
+     * Reads an integer with an optional default value on pressing Enter, or null on
+     * 0.
      *
      * @param prompt       the prompt message
      * @param min          minimum allowable value
@@ -125,38 +125,6 @@ public final class ConsoleUtil {
         }
     }
 
-    /**
-     * Reads a double value within a specified closed range [min, max].
-     *
-     * @param prompt the prompt message to display
-     * @param min    minimum allowable double
-     * @param max    maximum allowable double
-     * @return validated double value
-     */
-    public static double readDouble(String prompt, double min, double max) {
-        while (true) {
-            String input = readOptionalString(prompt);
-            try {
-                double val = Double.parseDouble(input);
-                if (val >= min && val <= max) {
-                    return val;
-                }
-                System.out.println("[ERROR] Please enter a number between " + min + " and " + max + ".");
-            } catch (NumberFormatException e) {
-                System.out.println("[ERROR] Invalid number format. Please enter a valid decimal number.");
-            }
-        }
-    }
-
-    /**
-     * Reads an optional double value with default on Enter, or null on 0.
-     *
-     * @param prompt       the prompt message
-     * @param min          minimum allowable double
-     * @param max          maximum allowable double
-     * @param defaultValue the default returned on pressing Enter
-     * @return double value, or defaultValue on empty, or null on 0
-     */
     public static Double readOptionalDouble(String prompt, double min, double max, Double defaultValue) {
         while (true) {
             String input = readOptionalString(prompt);
@@ -174,30 +142,6 @@ public final class ConsoleUtil {
                 System.out.println("[ERROR] Please enter a number between " + min + " and " + max + ".");
             } catch (NumberFormatException e) {
                 System.out.println("[ERROR] Invalid number format. Please enter a valid decimal number.");
-            }
-        }
-    }
-
-    /**
-     * Reads a LocalDate in dd/MM/yyyy format with optional default to current date.
-     *
-     * @param prompt            the prompt message
-     * @param allowDefaultToday true to return LocalDate.now() on pressing Enter
-     * @return parsed LocalDate, or null if cancelled with 0
-     */
-    public static LocalDate readLocalDate(String prompt, boolean allowDefaultToday) {
-        while (true) {
-            String input = readOptionalString(prompt);
-            if ("0".equals(input)) {
-                return null;
-            }
-            if (input.isEmpty() && allowDefaultToday) {
-                return LocalDate.now();
-            }
-            try {
-                return InputValidator.parseDate(input);
-            } catch (IllegalArgumentException e) {
-                System.out.println("[ERROR] " + e.getMessage());
             }
         }
     }

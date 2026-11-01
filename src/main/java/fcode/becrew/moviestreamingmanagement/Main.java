@@ -19,7 +19,8 @@ import java.nio.file.Paths;
 import java.util.Collections;
 
 /**
- * Main application bootstrap entry point for the Movie Streaming Management System.
+ * Main application bootstrap entry point for the Movie Streaming Management
+ * System.
  * Constructs dependency injection graph across controllers and views and starts
  * the interactive console lifecycle.
  */
@@ -52,16 +53,16 @@ public final class Main {
         CategoryController categoryController = new CategoryController(categoriesPath);
         MovieController movieController = new MovieController(moviesPath, categoryController);
         SubscriberController subscriberController = new SubscriberController(subscribersPath);
-        StreamingSessionController sessionController =
-                new StreamingSessionController(sessionsPath, subscriberController, movieController);
-        AnalyticsController analyticsController =
-                new AnalyticsController(sessionController, movieController, categoryController, subscriberController);
+        StreamingSessionController sessionController = new StreamingSessionController(sessionsPath,
+                subscriberController, movieController);
+        AnalyticsController analyticsController = new AnalyticsController(sessionController, movieController,
+                categoryController, subscriberController);
 
         MovieMenu movieMenu = new MovieMenu(movieController, categoryController);
         CategoryMenu categoryMenu = new CategoryMenu(categoryController, movieController);
         SubscriberMenu subscriberMenu = new SubscriberMenu(subscriberController, sessionController);
-        StreamingSessionMenu streamingSessionMenu =
-                new StreamingSessionMenu(sessionController, subscriberController, movieController);
+        StreamingSessionMenu streamingSessionMenu = new StreamingSessionMenu(sessionController, subscriberController,
+                movieController);
         AnalyticsMenu analyticsMenu = new AnalyticsMenu(analyticsController);
 
         MainMenu mainMenu = new MainMenu(
@@ -69,8 +70,7 @@ public final class Main {
                 categoryMenu,
                 subscriberMenu,
                 streamingSessionMenu,
-                analyticsMenu
-        );
+                analyticsMenu);
 
         mainMenu.display();
     }

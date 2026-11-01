@@ -1,7 +1,8 @@
 package fcode.becrew.moviestreamingmanagement.model;
 
 /**
- * Concrete subscriber tier providing ultra high-definition and 4 concurrent streams.
+ * Concrete subscriber tier providing ultra high-definition and 4 concurrent
+ * streams.
  */
 public class PremiumSubscriber extends Subscriber {
 

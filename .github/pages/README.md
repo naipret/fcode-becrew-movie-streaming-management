@@ -24,7 +24,7 @@ Browser Window (Client Device)
 |                                    | In-Memory Bytecode Execution      |
 | +----------------------------------v---------------------------------+ |
 | | CheerpJ 3.0 Java WebAssembly Runtime (JDK 8 JVM Engine)            | |
-| | +-- Application JAR: fcode-becrew-movie-streaming-management.jar  | |
+| | +-- Application JAR: fcode-becrew-movie-streaming-management.jar   | |
 | | \-- Virtual Filesystem (/files/data/*.csv -> Browser IndexedDB)    | |
 | +----------------------------------+---------------------------------+ |
 |                                    | Local Storage Persistence         |

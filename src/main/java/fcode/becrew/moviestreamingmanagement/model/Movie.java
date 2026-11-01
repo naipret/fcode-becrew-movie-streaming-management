@@ -33,8 +33,8 @@ public class Movie {
      * @param isDeleted       true if soft-deleted, false if active
      */
     public Movie(String id, String title, String categoryId, String director,
-                 String cast, int releaseYear, int durationMinutes,
-                 double rating, int viewCount, boolean isDeleted) {
+            String cast, int releaseYear, int durationMinutes,
+            double rating, int viewCount, boolean isDeleted) {
         this.id = InputValidator.normalizeId(id, 'M');
         this.title = InputValidator.normalizeText(title, "Movie title");
         this.categoryId = InputValidator.normalizeId(categoryId, 'G');

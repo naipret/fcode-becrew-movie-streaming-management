@@ -62,7 +62,8 @@ public final class CsvUtil {
     }
 
     /**
-     * Atomically writes CSV rows to the specified destination Path via a temporary file.
+     * Atomically writes CSV rows to the specified destination Path via a temporary
+     * file.
      *
      * @param targetPath the target file Path
      * @param rows       the list of string arrays representing CSV rows
@@ -101,7 +102,6 @@ public final class CsvUtil {
             try {
                 Files.deleteIfExists(tempPath);
             } catch (IOException ignored) {
-                // Ignore cleanup failure
             }
             throw new IllegalStateException("Failed to write temporary CSV: " + tempPath.getFileName(), e);
         }
