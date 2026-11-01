@@ -62,16 +62,14 @@ public final class ConsoleUtil {
      * @return trimmed input string, may be empty
      */
     public static String readOptionalString(String prompt) {
-        Scanner scanner = ScannerManager.getInstance().getScanner();
-        System.out.print(prompt);
-        try {
-            if (scanner.hasNextLine()) {
-                return scanner.nextLine().trim();
-            }
-        } catch (NoSuchElementException e) {
-            return "0";
+        if (prompt != null && !prompt.isEmpty()) {
+            System.out.print(prompt);
         }
-        return "";
+        Scanner scanner = ScannerManager.getInstance().getScanner();
+        if (!scanner.hasNextLine()) {
+            throw new NoSuchElementException("End of input stream reached.");
+        }
+        return scanner.nextLine().trim();
     }
 
     /**
