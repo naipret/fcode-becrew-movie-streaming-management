@@ -134,6 +134,13 @@ public class StreamingSessionController {
         String nextId = generateNextId();
         LocalDateTime validDate = (sessionDate != null) ? sessionDate : LocalDateTime.now();
 
+        int activeStreams = countActiveConcurrentStreams(subscriber.getId(), validDate);
+        if (activeStreams >= subscriber.getMaxConcurrentStreams()) {
+            throw new IllegalArgumentException("Subscriber " + subscriber.getId()
+                    + " has reached the maximum concurrent streaming limit ("
+                    + subscriber.getMaxConcurrentStreams() + " streams).");
+        }
+
         StreamingSession session = new StreamingSession(nextId, subscriber.getId(), movie.getId(),
                 validDate, watchedMinutes, isCompleted);
         this.sessions.add(session);
@@ -239,6 +246,32 @@ public class StreamingSessionController {
             return results;
         }
         return Collections.unmodifiableList(results);
+    }
+
+    /**
+     * Counts the number of active overlapping streaming sessions for a subscriber
+     * at a given timestamp.
+     *
+     * @param subscriberId the subscriber identifier
+     * @param targetTime   the target playback timestamp
+     * @return the count of concurrent active sessions
+     */
+    public int countActiveConcurrentStreams(String subscriberId, LocalDateTime targetTime) {
+        if (subscriberId == null || targetTime == null) {
+            return 0;
+        }
+        int count = 0;
+        for (int i = 0; i < this.sessions.size(); i++) {
+            StreamingSession s = this.sessions.get(i);
+            if (s.getSubscriberId().equalsIgnoreCase(subscriberId)) {
+                LocalDateTime start = s.getSessionDate();
+                LocalDateTime end = start.plusMinutes(s.getWatchedMinutes());
+                if (!targetTime.isBefore(start) && targetTime.isBefore(end)) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     private String generateNextId() {
